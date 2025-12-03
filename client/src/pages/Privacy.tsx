@@ -11,6 +11,7 @@ export default function Privacy() {
       <Head 
         title="Privacy Policy — nhs bmi calculator" 
         description="Our privacy policy explains how we handle your data, cookies, and protect your privacy while using the nhs bmi calculator."
+        canonical="https://replit.com/privacy"
       />
       
       <div className="container mx-auto px-4 py-16 max-w-4xl">

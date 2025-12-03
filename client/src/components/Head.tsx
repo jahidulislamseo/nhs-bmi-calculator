@@ -35,7 +35,18 @@ export default function Head({ title, description, canonical }: HeadProps) {
     let twDesc = document.querySelector('meta[name="twitter:description"]');
     if (twDesc) twDesc.setAttribute('content', description);
 
-  }, [title, description]);
+    // Update Canonical Link
+    if (canonical) {
+      let linkCanonical = document.querySelector('link[rel="canonical"]');
+      if (!linkCanonical) {
+        linkCanonical = document.createElement('link');
+        linkCanonical.setAttribute('rel', 'canonical');
+        document.head.appendChild(linkCanonical);
+      }
+      linkCanonical.setAttribute('href', canonical);
+    }
+
+  }, [title, description, canonical]);
 
   return null;
 }

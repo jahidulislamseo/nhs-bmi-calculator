@@ -12,6 +12,7 @@ export default function Contact() {
       <Head 
         title="Contact Us — nhs bmi calculator" 
         description="Get in touch with the team behind nhs bmi calculator. We aim to reply within 48 hours."
+        canonical="https://replit.com/contact"
       />
       
       <div className="container mx-auto px-4 py-16 max-w-5xl">

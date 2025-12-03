@@ -7,6 +7,7 @@ export default function About() {
       <Head 
         title="About Us — nhs bmi calculator" 
         description="Learn about the mission, purpose, and team behind the nhs bmi calculator tool. Dedicated to simplifying health metrics."
+        canonical="https://replit.com/about"
       />
       
       <div className="container mx-auto px-4 py-16 max-w-4xl">

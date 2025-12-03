@@ -19,6 +19,7 @@ export default function Home() {
       <Head 
         title="nhs bmi calculator — Fast & Accurate BMI Tool" 
         description="Use the free nhs bmi calculator to check your body mass index quickly. Metric & imperial inputs, BMI categories, and health guidance."
+        canonical="https://replit.com/"
       />
       <script type="application/ld+json">
         {JSON.stringify(schemaData)}
