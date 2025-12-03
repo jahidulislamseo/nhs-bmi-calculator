@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import logoImage from "@assets/generated_images/minimalist_logo_for_bmi_calculator_with_heartbeat_icon.png";
-import { Menu, X, Facebook, Linkedin, Instagram } from "lucide-react";
+import { Menu, X, Facebook, Linkedin, Instagram, Heart } from "lucide-react";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 

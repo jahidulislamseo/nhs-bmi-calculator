@@ -48,8 +48,7 @@ export default function BMICalculator() {
     defaultValues: { 
       heightCm: "", 
       weightKg: "", 
-      age: "", 
-      sex: undefined 
+      age: ""
     },
     mode: "onChange"
   });
@@ -61,8 +60,7 @@ export default function BMICalculator() {
       heightIn: "", 
       weightSt: "", 
       weightLbs: "", 
-      age: "", 
-      sex: undefined 
+      age: ""
     },
     mode: "onChange"
   });
@@ -104,16 +102,14 @@ export default function BMICalculator() {
     metricForm.reset({ 
       heightCm: "", 
       weightKg: "", 
-      age: "", 
-      sex: undefined 
+      age: ""
     });
     imperialForm.reset({ 
       heightFt: "", 
       heightIn: "", 
       weightSt: "", 
       weightLbs: "", 
-      age: "", 
-      sex: undefined 
+      age: ""
     });
   };
 
