@@ -90,64 +90,64 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
 
             {/* Category labels */}
             <text 
-              x={polarToCartesian(centerX, centerY, radius - 50, valueToAngle(9)).x} 
-              y={polarToCartesian(centerX, centerY, radius - 50, valueToAngle(9)).y} 
-              fontSize="10" 
+              x={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(9)).x} 
+              y={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(9)).y + 4} 
+              fontSize="9" 
               fontWeight="600"
               textAnchor="middle" 
-              fill="#333"
+              fill="#000"
             >
               Underweight
             </text>
             
             <text 
-              x={polarToCartesian(centerX, centerY, radius - 50, valueToAngle(21.75)).x} 
-              y={polarToCartesian(centerX, centerY, radius - 50, valueToAngle(21.75)).y} 
-              fontSize="10" 
+              x={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(21.75)).x} 
+              y={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(21.75)).y + 4} 
+              fontSize="9" 
               fontWeight="600"
               textAnchor="middle" 
-              fill="#333"
+              fill="#000"
             >
               Normal
             </text>
             
             <text 
-              x={polarToCartesian(centerX, centerY, radius - 50, valueToAngle(27.5)).x} 
-              y={polarToCartesian(centerX, centerY, radius - 50, valueToAngle(27.5)).y} 
-              fontSize="10" 
+              x={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(27.5)).x} 
+              y={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(27.5)).y + 4} 
+              fontSize="9" 
               fontWeight="600"
               textAnchor="middle" 
-              fill="#333"
+              fill="#000"
             >
               Overweight
             </text>
             
             <text 
-              x={polarToCartesian(centerX, centerY, radius - 50, valueToAngle(35)).x} 
-              y={polarToCartesian(centerX, centerY, radius - 50, valueToAngle(35)).y} 
-              fontSize="10" 
+              x={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(35)).x} 
+              y={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(35)).y + 4} 
+              fontSize="9" 
               fontWeight="600"
               textAnchor="middle" 
-              fill="#333"
+              fill="#000"
             >
               Obesity
             </text>
 
             {/* BMI markers */}
-            <text x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(18.5)).x} y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(18.5)).y} fontSize="9" fontWeight="bold" textAnchor="middle" fill="#333">18.5</text>
-            <text x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(25)).x} y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(25)).y} fontSize="9" fontWeight="bold" textAnchor="middle" fill="#333">25</text>
-            <text x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(30)).x} y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(30)).y} fontSize="9" fontWeight="bold" textAnchor="middle" fill="#333">30</text>
-            <text x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(40)).x} y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(40)).y} fontSize="9" fontWeight="bold" textAnchor="middle" fill="#333">40</text>
+            <text x={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(18.5)).x} y={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(18.5)).y + 3} fontSize="8" fontWeight="bold" textAnchor="middle" fill="#000">18.5</text>
+            <text x={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(25)).x} y={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(25)).y + 3} fontSize="8" fontWeight="bold" textAnchor="middle" fill="#000">25</text>
+            <text x={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(30)).x} y={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(30)).y + 3} fontSize="8" fontWeight="bold" textAnchor="middle" fill="#000">30</text>
+            <text x={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(40)).x} y={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(40)).y + 3} fontSize="8" fontWeight="bold" textAnchor="middle" fill="#000">40</text>
 
             {/* Central BMI Text */}
-            <text x={centerX} y={centerY + 35} fontSize="24" fontWeight="bold" textAnchor="middle" fill="#000">
-              <tspan x={centerX} dy="0">BMI = {result.bmi}</tspan>
+            <text x={centerX} y={centerY + 25} fontSize="22" fontWeight="bold" textAnchor="middle" fill="#000">
+              BMI = {result.bmi}
             </text>
 
-            {/* Needle */}
-            <g transform={`translate(${centerX}, ${centerY}) rotate(${needleAngle})`}>
-               <path d="M -4 0 L 75 -4 L 75 4 Z" fill="#333" />
-               <circle cx="0" cy="0" r="10" fill="#fff" stroke="#333" strokeWidth="3" />
+            {/* Needle - Simple triangle pointer */}
+            <g transform={`translate(${centerX}, ${centerY}) rotate(${needleAngle - 90})`}>
+               <polygon points="0,-70 -8,5 8,5" fill="#333" />
+               <circle cx="0" cy="0" r="8" fill="#666" />
             </g>
           </svg>
         </div>
