@@ -1,3 +1,4 @@
+
 import { Save } from "lucide-react";
 import { type BMIResult } from "@/lib/bmi";
 
@@ -13,18 +14,17 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
   const displayWeight = (kg: number) => unit === "imperial" ? `${kgToLbs(kg)} lbs` : `${kg.toFixed(1)} kg`;
 
   // Gauge Constants
-  const radius = 120;
-  const strokeWidth = 30;
+  const radius = 100;
+  const strokeWidth = 40;
   const centerX = 150;
   const centerY = 150;
   
   // Chart Ranges (BMI values)
-  const minChart = 12;
-  const maxChart = 42;
+  const minChart = 0;
+  const maxChart = 40;
   const totalRange = maxChart - minChart;
   
   // Angle Mapping (180 degrees total, from 180 to 360 in SVG coords)
-  // 180 deg = Left, 270 deg = Top, 360/0 deg = Right
   const startAngle = 180;
   const endAngle = 360;
   
@@ -38,10 +38,10 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
 
   // Text color based on category for the header
   const getHeaderColor = () => {
-    if (result.category === "Healthy Weight") return "bg-[#4CAF50]"; // Green
-    if (result.category === "Underweight") return "bg-[#FBC02D]"; // Yellow-Orange
-    if (result.category === "Overweight") return "bg-[#FFEB3B] text-black"; // Yellow
-    return "bg-[#D32F2F]"; // Red
+    if (result.category === "Healthy Weight") return "bg-[#4CAF50]";
+    if (result.category === "Underweight") return "bg-[#81C784]";
+    if (result.category === "Overweight") return "bg-[#FDD835]";
+    return "bg-[#E57373]";
   };
 
   return (
@@ -49,46 +49,27 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
       {/* Header */}
       <div className={`${getHeaderColor()} p-3 flex justify-between items-center text-white transition-colors duration-300`}>
         <h2 className={`text-xl font-bold ${result.category === "Overweight" ? "text-black" : "text-white"}`}>Result</h2>
-        <button onClick={onSavePdf} className="flex flex-col items-center text-xs hover:opacity-80 transition-opacity">
+        <button onClick={onSavePdf} className={`flex flex-col items-center text-xs hover:opacity-80 transition-opacity ${result.category === "Overweight" ? "text-black" : "text-white"}`}>
           <Save className="h-5 w-5" />
           <span>save</span>
         </button>
       </div>
 
       <div className="p-6">
-        {/* Summary Line */}
-        <div className="text-center mb-6">
-          <span className="text-xl font-bold">BMI = {result.bmi} kg/m² </span>
-          <span className={`text-xl font-bold ml-2 ${
-            result.category === "Healthy Weight" ? "text-[#4CAF50]" : 
-            result.category === "Overweight" ? "text-[#F9A825]" : 
-            result.category === "Underweight" ? "text-[#F57F17]" : "text-[#D32F2F]"
-          }`}>
-            ({result.category})
-          </span>
-        </div>
-
         {/* Gauge Visualization */}
-        <div className="relative h-48 w-full flex justify-center overflow-hidden mb-6">
-          <svg viewBox="0 0 300 160" className="w-full max-w-[300px]">
-             {/* Definitions for gradients if we wanted them, but flat colors are requested */}
+        <div className="relative h-56 w-full flex justify-center overflow-hidden mb-6">
+          <svg viewBox="0 0 300 180" className="w-full max-w-[300px]">
+            {/* Background segments with distinct colors matching demo */}
             
-            {/* Segments 
-                Underweight: 12 - 18.5
-                Normal: 18.5 - 25
-                Overweight: 25 - 30
-                Obese: 30 - 42
-            */}
-            
-            {/* Underweight (Yellow/Orange) */}
+            {/* Underweight (Green) - 0 to 18.5 */}
             <path 
-              d={describeArc(centerX, centerY, radius, valueToAngle(12), valueToAngle(18.5))} 
+              d={describeArc(centerX, centerY, radius, valueToAngle(0), valueToAngle(18.5))} 
               fill="none" 
-              stroke="#FFEB3B" 
+              stroke="#81C784" 
               strokeWidth={strokeWidth} 
             />
             
-            {/* Normal (Green) */}
+            {/* Normal/Healthy (Darker Green) - 18.5 to 25 */}
             <path 
               d={describeArc(centerX, centerY, radius, valueToAngle(18.5), valueToAngle(25))} 
               fill="none" 
@@ -96,91 +77,87 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
               strokeWidth={strokeWidth} 
             />
             
-            {/* Overweight (Amber/Orange) */}
+            {/* Overweight (Yellow) - 25 to 30 */}
             <path 
               d={describeArc(centerX, centerY, radius, valueToAngle(25), valueToAngle(30))} 
               fill="none" 
-              stroke="#FFC107" 
+              stroke="#FDD835" 
               strokeWidth={strokeWidth} 
             />
             
-            {/* Obese (Red) */}
+            {/* Obesity (Red/Pink) - 30 to 40 */}
             <path 
-              d={describeArc(centerX, centerY, radius, valueToAngle(30), valueToAngle(42))} 
+              d={describeArc(centerX, centerY, radius, valueToAngle(30), valueToAngle(40))} 
               fill="none" 
-              stroke="#D32F2F" 
+              stroke="#E57373" 
               strokeWidth={strokeWidth} 
             />
 
-            {/* Divider Lines (White) to separate zones clearly */}
+            {/* White divider lines between segments */}
             <path d={describeArc(centerX, centerY, radius, valueToAngle(18.5)-0.5, valueToAngle(18.5)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
             <path d={describeArc(centerX, centerY, radius, valueToAngle(25)-0.5, valueToAngle(25)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
             <path d={describeArc(centerX, centerY, radius, valueToAngle(30)-0.5, valueToAngle(30)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
 
-            {/* Text Labels - MOVED OUTSIDE / ABOVE */}
-            {/* Positioned using polar coordinates at a LARGER radius (e.g., 140) to sit above the arc */}
+            {/* Category labels positioned outside the arc */}
             <text 
-              x={polarToCartesian(centerX, centerY, 140, valueToAngle(15.25)).x} 
-              y={polarToCartesian(centerX, centerY, 140, valueToAngle(15.25)).y} 
-              fontSize="9" 
+              x={polarToCartesian(centerX, centerY, 135, valueToAngle(9)).x} 
+              y={polarToCartesian(centerX, centerY, 135, valueToAngle(9)).y} 
+              fontSize="11" 
+              fontWeight="600"
               textAnchor="middle" 
-              transform={`rotate(-50, ${polarToCartesian(centerX, centerY, 140, valueToAngle(15.25)).x}, ${polarToCartesian(centerX, centerY, 140, valueToAngle(15.25)).y})`} 
-              fill="#555"
+              fill="#333"
             >
               Underweight
             </text>
             
             <text 
-              x={polarToCartesian(centerX, centerY, 140, valueToAngle(21.75)).x} 
-              y={polarToCartesian(centerX, centerY, 140, valueToAngle(21.75)).y} 
-              fontSize="9" 
+              x={polarToCartesian(centerX, centerY, 135, valueToAngle(21.75)).x} 
+              y={polarToCartesian(centerX, centerY, 135, valueToAngle(21.75)).y} 
+              fontSize="11" 
+              fontWeight="600"
               textAnchor="middle" 
-              transform={`rotate(-20, ${polarToCartesian(centerX, centerY, 140, valueToAngle(21.75)).x}, ${polarToCartesian(centerX, centerY, 140, valueToAngle(21.75)).y})`} 
-              fill="#555"
+              fill="#333"
             >
               Normal
             </text>
             
             <text 
-              x={polarToCartesian(centerX, centerY, 140, valueToAngle(27.5)).x} 
-              y={polarToCartesian(centerX, centerY, 140, valueToAngle(27.5)).y} 
-              fontSize="9" 
+              x={polarToCartesian(centerX, centerY, 135, valueToAngle(27.5)).x} 
+              y={polarToCartesian(centerX, centerY, 135, valueToAngle(27.5)).y} 
+              fontSize="11" 
+              fontWeight="600"
               textAnchor="middle" 
-              transform={`rotate(20, ${polarToCartesian(centerX, centerY, 140, valueToAngle(27.5)).x}, ${polarToCartesian(centerX, centerY, 140, valueToAngle(27.5)).y})`} 
-              fill="#555"
+              fill="#333"
             >
               Overweight
             </text>
             
             <text 
-              x={polarToCartesian(centerX, centerY, 140, valueToAngle(36)).x} 
-              y={polarToCartesian(centerX, centerY, 140, valueToAngle(36)).y} 
-              fontSize="9" 
+              x={polarToCartesian(centerX, centerY, 135, valueToAngle(35)).x} 
+              y={polarToCartesian(centerX, centerY, 135, valueToAngle(35)).y} 
+              fontSize="11" 
+              fontWeight="600"
               textAnchor="middle" 
-              transform={`rotate(50, ${polarToCartesian(centerX, centerY, 140, valueToAngle(36)).x}, ${polarToCartesian(centerX, centerY, 140, valueToAngle(36)).y})`} 
-              fill="#555"
+              fill="#333"
             >
               Obesity
             </text>
 
+            {/* Key BMI value markers */}
+            <text x={polarToCartesian(centerX, centerY, 75, valueToAngle(18.5)).x} y={polarToCartesian(centerX, centerY, 75, valueToAngle(18.5)).y} fontSize="10" fontWeight="bold" textAnchor="middle" fill="#333">18.5</text>
+            <text x={polarToCartesian(centerX, centerY, 75, valueToAngle(25)).x} y={polarToCartesian(centerX, centerY, 75, valueToAngle(25)).y} fontSize="10" fontWeight="bold" textAnchor="middle" fill="#333">25</text>
+            <text x={polarToCartesian(centerX, centerY, 75, valueToAngle(30)).x} y={polarToCartesian(centerX, centerY, 75, valueToAngle(30)).y} fontSize="10" fontWeight="bold" textAnchor="middle" fill="#333">30</text>
+            <text x={polarToCartesian(centerX, centerY, 75, valueToAngle(40)).x} y={polarToCartesian(centerX, centerY, 75, valueToAngle(40)).y} fontSize="10" fontWeight="bold" textAnchor="middle" fill="#333">40</text>
 
-            {/* Numeric Ticks (Inside now, since labels are outside) */}
-            {/* 18.5 */}
-            <text x={polarToCartesian(centerX, centerY, 95, valueToAngle(18.5)).x} y={polarToCartesian(centerX, centerY, 95, valueToAngle(18.5)).y} fontSize="10" textAnchor="middle" fill="#777">18.5</text>
-            {/* 25 */}
-            <text x={polarToCartesian(centerX, centerY, 95, valueToAngle(25)).x} y={polarToCartesian(centerX, centerY, 95, valueToAngle(25)).y} fontSize="10" textAnchor="middle" fill="#777">25</text>
-            {/* 30 */}
-            <text x={polarToCartesian(centerX, centerY, 95, valueToAngle(30)).x} y={polarToCartesian(centerX, centerY, 95, valueToAngle(30)).y} fontSize="10" textAnchor="middle" fill="#777">30</text>
-
-
-            {/* Needle */}
+            {/* Needle with arrow pointing up */}
             <g transform={`translate(${centerX}, ${centerY}) rotate(${needleAngle})`}>
-               <path d="M 0 -5 L 110 0 L 0 5 Z" fill="#333" />
-               <circle cx="0" cy="0" r="8" fill="#555" />
+               {/* Arrow shape needle */}
+               <path d="M -8 0 L 95 -8 L 95 8 Z" fill="#333" />
+               <circle cx="0" cy="0" r="10" fill="#555" stroke="#333" strokeWidth="2" />
             </g>
 
             {/* Central BMI Text */}
-            <text x={centerX} y={centerY - 20} fontSize="28" fontWeight="bold" textAnchor="middle" fill="black">BMI = {result.bmi}</text>
+            <text x={centerX} y={centerY + 30} fontSize="32" fontWeight="bold" textAnchor="middle" fill="#000">BMI = {result.bmi}</text>
           </svg>
         </div>
 
