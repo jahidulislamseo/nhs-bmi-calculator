@@ -164,10 +164,10 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
             </text>
 
             {/* Needle */}
-            <g transform={`translate(${centerX}, ${centerY}) rotate(${needleAngle - 90})`}>
-               <line x1="0" y1="0" x2="0" y2="-85" stroke="#333" strokeWidth="2" />
-               <polygon points="0,-95 -6,-85 6,-85" fill="#000" />
-               <circle cx="0" cy="0" r="6" fill="#555" />
+            <g transform={`translate(${centerX}, ${centerY}) rotate(${needleAngle - 270})`}>
+               <line x1="0" y1="0" x2="0" y2="-65" stroke="#333" strokeWidth="3" />
+               <polygon points="0,-75 -5,-65 5,-65" fill="#333" />
+               <circle cx="0" cy="0" r="8" fill="#666" />
             </g>
           </svg>
         </div>
