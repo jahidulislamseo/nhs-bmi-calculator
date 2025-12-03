@@ -45,10 +45,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-            <img 
-              src={logoImage} 
-              alt="nhs bmi calculator logo" 
-              className="h-10 w-auto object-contain" 
+            <img
+              src={logoImage}
+              alt="nhs bmi calculator logo"
+              className="h-10 w-auto object-contain"
             />
             <span className="font-heading font-bold text-xl tracking-tight hidden sm:block text-primary-black">
               nhs bmi calculator
@@ -56,21 +56,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
-              <Link 
-                key={link.href} 
-                href={link.href} 
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  isActive(link.href) ? "text-primary font-bold" : "text-muted-foreground"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+          <nav className="hidden md:flex gap-6 items-center">
+            <a href="/about" className="text-sm font-medium hover:text-primary transition-colors">
+              About
+            </a>
+            <a href="/contact" className="text-sm font-medium hover:text-primary transition-colors">
+              Contact
+            </a>
+            <a href="/disclaimer" className="text-sm font-medium hover:text-primary transition-colors">
+              Disclaimer
+            </a>
+            <a href="/privacy" className="text-sm font-medium hover:text-primary transition-colors">
+              Privacy
+            </a>
             <Link href="/">
-              <Button 
-                variant="default" 
+              <Button
+                variant="default"
                 className="bg-primary hover:bg-primary/90 text-white shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
               >
                 Calculate Now
@@ -89,8 +90,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <SheetContent side="right" className="w-[250px] sm:w-[300px]">
                 <div className="flex flex-col gap-6 mt-6">
                   {navLinks.map((link) => (
-                    <Link 
-                      key={link.href} 
+                    <Link
+                      key={link.href}
                       href={link.href}
                       className={`text-lg font-medium transition-colors hover:text-primary ${
                         isActive(link.href) ? "text-primary" : "text-foreground"
@@ -101,7 +102,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </Link>
                   ))}
                   <Link href="/">
-                    <Button 
+                    <Button
                       className="w-full bg-primary hover:bg-primary/90"
                       onClick={() => setIsMobileOpen(false)}
                     >
@@ -122,7 +123,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <footer className="bg-neutral-100 border-t border-neutral-200 pt-12 pb-8">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            
+
             {/* Column 1: Brand */}
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-2">
@@ -140,7 +141,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <ul className="flex flex-col gap-2">
                 {navLinks.map((link) => (
                   <li key={link.href}>
-                    <Link 
+                    <Link
                       href={link.href}
                       className="text-sm text-muted-foreground hover:text-primary transition-colors hover:underline"
                     >
