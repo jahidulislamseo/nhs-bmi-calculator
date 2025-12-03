@@ -139,14 +139,16 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
             <text x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(30)).x} y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(30)).y} fontSize="9" fontWeight="bold" textAnchor="middle" fill="#333">30</text>
             <text x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(40)).x} y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(40)).y} fontSize="9" fontWeight="bold" textAnchor="middle" fill="#333">40</text>
 
+            {/* Central BMI Text */}
+            <text x={centerX} y={centerY + 35} fontSize="24" fontWeight="bold" textAnchor="middle" fill="#000">
+              <tspan x={centerX} dy="0">BMI = {result.bmi}</tspan>
+            </text>
+
             {/* Needle */}
             <g transform={`translate(${centerX}, ${centerY}) rotate(${needleAngle})`}>
-               <path d="M -6 0 L 80 -6 L 80 6 Z" fill="#333" />
-               <circle cx="0" cy="0" r="8" fill="#555" stroke="#333" strokeWidth="2" />
+               <path d="M -4 0 L 75 -4 L 75 4 Z" fill="#333" />
+               <circle cx="0" cy="0" r="10" fill="#fff" stroke="#333" strokeWidth="3" />
             </g>
-
-            {/* Central BMI Text */}
-            <text x={centerX} y={centerY + 30} fontSize="28" fontWeight="bold" textAnchor="middle" fill="#000">BMI = {result.bmi}</text>
           </svg>
         </div>
 
