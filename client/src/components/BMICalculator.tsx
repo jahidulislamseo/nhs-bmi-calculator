@@ -147,7 +147,7 @@ export default function BMICalculator() {
                             <FormItem>
                               <FormLabel>Height (cm)</FormLabel>
                               <FormControl>
-                                <Input type="number" placeholder="e.g. 175" {...field} />
+                                <Input type="text" inputMode="numeric" placeholder="e.g. 175" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -160,7 +160,7 @@ export default function BMICalculator() {
                             <FormItem>
                               <FormLabel>Weight (kg)</FormLabel>
                               <FormControl>
-                                <Input type="number" placeholder="e.g. 70" {...field} />
+                                <Input type="text" inputMode="numeric" placeholder="e.g. 70" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -224,7 +224,7 @@ export default function BMICalculator() {
                             <FormItem>
                               <FormLabel>Height (ft)</FormLabel>
                               <FormControl>
-                                <Input type="number" placeholder="5" {...field} />
+                                <Input type="text" inputMode="numeric" placeholder="5" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -237,7 +237,7 @@ export default function BMICalculator() {
                             <FormItem>
                               <FormLabel>(in)</FormLabel>
                               <FormControl>
-                                <Input type="number" placeholder="9" {...field} />
+                                <Input type="text" inputMode="numeric" placeholder="9" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -253,7 +253,7 @@ export default function BMICalculator() {
                             <FormItem>
                               <FormLabel>Weight (st)</FormLabel>
                               <FormControl>
-                                <Input type="number" placeholder="11" {...field} />
+                                <Input type="text" inputMode="numeric" placeholder="11" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -266,7 +266,7 @@ export default function BMICalculator() {
                             <FormItem>
                               <FormLabel>(lbs)</FormLabel>
                               <FormControl>
-                                <Input type="number" placeholder="4" {...field} />
+                                <Input type="text" inputMode="numeric" placeholder="4" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
