@@ -20,6 +20,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Share2, Download, RefreshCw, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { calculateMetricBMI, calculateImperialBMI, interpretBMI, type BMIResult } from "@/lib/bmi";
+import BMIResultCard from "@/components/BMIResultCard";
 
 // Use strings for form inputs to allow easier typing and validation
 const metricSchema = z.object({
@@ -67,26 +68,31 @@ export default function BMICalculator() {
   });
 
   const calculateMetric = (data: z.infer<typeof metricSchema>) => {
-    const bmi = calculateMetricBMI(Number(data.heightCm), Number(data.weightKg));
-    setResult(interpretBMI(bmi));
+    const heightCm = Number(data.heightCm);
+    const weightKg = Number(data.weightKg);
+    const bmi = calculateMetricBMI(heightCm, weightKg);
+    // Pass height in meters and weight in kg for extended stats
+    setResult(interpretBMI(bmi, heightCm / 100, weightKg));
   };
 
   const calculateImperial = (data: z.infer<typeof imperialSchema>) => {
-    const bmi = calculateImperialBMI(
-      Number(data.heightFt), 
-      Number(data.heightIn || 0), 
-      Number(data.weightSt || 0), 
-      Number(data.weightLbs)
-    );
-    setResult(interpretBMI(bmi));
-  };
+    const heightFt = Number(data.heightFt);
+    const heightIn = Number(data.heightIn || 0);
+    const weightSt = Number(data.weightSt || 0);
+    const weightLbs = Number(data.weightLbs);
+    
+    const bmi = calculateImperialBMI(heightFt, heightIn, weightSt, weightLbs);
+    
+    // Convert imperial inputs to metric for extended stats
+    // 1 inch = 0.0254 meters
+    const totalInches = (heightFt * 12) + heightIn;
+    const heightM = totalInches * 0.0254;
+    
+    // 1 lb = 0.453592 kg
+    const totalLbs = (weightSt * 14) + weightLbs;
+    const weightKg = totalLbs * 0.453592;
 
-  const copyToClipboard = () => {
-    if (result) {
-      const text = `My BMI is ${result.bmi} (${result.category}). Calculated with nhs bmi calculator.`;
-      navigator.clipboard.writeText(text);
-      alert("Result copied to clipboard!");
-    }
+    setResult(interpretBMI(bmi, heightM, weightKg));
   };
 
   const saveAsPDF = () => {
@@ -176,7 +182,7 @@ export default function BMICalculator() {
                             <FormItem>
                               <FormLabel>Age (Optional)</FormLabel>
                               <FormControl>
-                                <Input type="number" placeholder="e.g. 30" {...field} />
+                                <Input type="text" inputMode="numeric" placeholder="e.g. 30" {...field} />
                               </FormControl>
                             </FormItem>
                           )}
@@ -282,7 +288,7 @@ export default function BMICalculator() {
                             <FormItem>
                               <FormLabel>Age (Optional)</FormLabel>
                               <FormControl>
-                                <Input type="number" placeholder="e.g. 30" {...field} />
+                                <Input type="text" inputMode="numeric" placeholder="e.g. 30" {...field} />
                               </FormControl>
                             </FormItem>
                           )}
@@ -327,38 +333,12 @@ export default function BMICalculator() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="space-y-6"
               >
-                <div className={`p-6 rounded-lg border-2 text-center space-y-2 ${result.color} animate-pulse-soft`}>
-                  <p className="text-sm font-medium uppercase tracking-wide opacity-80">Your BMI is</p>
-                  <div className="text-5xl font-bold font-heading tracking-tight">
-                    {result.bmi}
-                  </div>
-                  <div className="text-xl font-bold mt-2">
-                    {result.category}
-                  </div>
-                  <p className="mt-4 text-sm opacity-90 max-w-xs mx-auto">
-                    {result.message}
-                  </p>
-                </div>
-
-                <Alert>
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>Important</AlertTitle>
-                  <AlertDescription>
-                    This result is for information only. Please consult a healthcare professional for medical advice.
-                  </AlertDescription>
-                </Alert>
-
-                <div className="flex gap-3 justify-center">
-                  <Button variant="outline" size="sm" onClick={copyToClipboard} className="gap-2">
-                    <Share2 size={16} /> Share
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={saveAsPDF} className="gap-2">
-                    <Download size={16} /> Save PDF
-                  </Button>
+                <BMIResultCard result={result} unit={unit} onSavePdf={saveAsPDF} />
+                
+                <div className="flex gap-3 justify-center mt-6">
                   <Button variant="ghost" size="sm" onClick={reset} className="gap-2">
-                    <RefreshCw size={16} /> Recalculate
+                    <RefreshCw size={16} /> Calculate Again
                   </Button>
                 </div>
               </motion.div>
