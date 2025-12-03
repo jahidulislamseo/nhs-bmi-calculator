@@ -1,0 +1,113 @@
+You are a skilled frontend developer and UX writer. Build a complete, responsive, and accessible single-tool website named **"nhs bmi calculator"**. Deliver production-ready HTML/CSS/JS (or a single-file React component + supporting assets) and content. Follow the requirements below exactly.
+
+1) Brand & visual identity
+- Site name: **nhs bmi calculator** (use lowercase in visible branding).
+- Color theme: red and black. Use these color codes:
+  - Primary red: #D32F2F
+  - Primary black: #0D0D0D
+  - Background / white: #FFFFFF
+  - Accent/neutral: #F4F4F4 and #777777
+- Typography: modern, highly legible: use system sans + Google Font fallback (e.g., Inter or Poppins).
+- Logo: simple text + minimal icon mark (heartbeat or scale outline). Place logo above the first column of footer (see footer spec).
+- Provide optimized PNG & SVG logo assets and a favicon (16/32/180). Include retina variants.
+
+2) Pages & content (deliver full copy)
+Create the following pages with natural, helpful, SEO-ready copy. All copy must be original, helpful, and optimized for the exact keyword **"nhs bmi calculator"** (use the keyword naturally — not keyword stuffing). Provide suggested word counts and include H1/H2/H3 headings, one short FAQ, and at least one internal link on each page.
+
+A) Home / Tool page (primary landing page)
+- Purpose: clear, fast BMI calculator tool with immediate access above the fold.
+- Hero: H1 must include the keyword: `nhs bmi calculator`.
+- Content: 350–600 words total explaining what BMI is, who should use it, limitations, and CTA to calculate now. Use the keyword 3–6 times naturally.
+- Calculator: inputs for height (cm or ft/in toggle), weight (kg or lb toggle), optional age and sex, "Calculate" button, clear numeric result, BMI category (Underweight / Healthy / Overweight / Obese) with short guidance lines, and friendly microcopy recommending consulting a healthcare professional for medical advice. Include an accessible copy-to-clipboard or share link button and a “Save as PDF” option (client-side).
+- Validation & UX: real-time validation, keyboard accessible, proper aria labels, focus states, visible error messages.
+- SEO: include internal anchor links to About, Contact, Privacy & Disclaimer.
+- Structured data: JSON-LD for WebApplication and schema.org SoftwareApplication / Tool with name “nhs bmi calculator”, description, URL, and screenshot.
+
+B) About Us
+- Word count: 300–450 words.
+- Copy: explain purpose, mission (help users quickly assess BMI), trust signals (no medical advice, informational only), short team/author blurb.
+- Include the keyword once or twice naturally and at least one sentence about data privacy / no user data stored.
+
+C) Contact Us
+- Word count: 200–350 words + contact form.
+- Content: short intro, contact form (name, email, message), email address, social media links. Add business hours and an anti-spam honeypot.
+- Provide microcopy explaining response time (e.g., “We aim to reply within 48 hours”).
+
+D) Disclaimer
+- Word count: 400–700 words.
+- Copy: explicit medical disclaimer stating the tool is informational, not a medical device; recommend consulting a healthcare professional; state no liability for decisions based on BMI results.
+
+E) Privacy Policy
+- Word count: 500–900 words.
+- Copy: GDPR & UK-focused privacy language. Explain what data (if any) is collected (cookies, analytics, contact form entries), how it’s used, retention, lawful basis, third parties (e.g., Google Analytics), and user rights (access, rectification, deletion). Provide contact email for privacy requests.
+- Cookie policy: brief section describing essential vs optional cookies and provide a cookie consent banner (client-side).
+
+3) Meta title & description (optimize for keyword)
+- Provide a meta title (≤60 characters) and meta description (≤160 characters) for the primary tool/home page optimized for **"nhs bmi calculator"**. Example:
+  - Meta title: `nhs bmi calculator — Fast & Accurate BMI Tool`
+  - Meta description: `Use the free nhs bmi calculator to check your body mass index quickly. Metric & imperial inputs, BMI categories, and health guidance.`
+
+Include meta titles/descriptions for About, Contact, Disclaimer, and Privacy pages as well (concise & unique).
+
+4) Footer & header
+- Header: sticky top nav with logo (left), menu (Home, About, Contact, Privacy, Disclaimer) and a prominent CTA button linking to the calculator.
+- Footer: 4 columns. Place the logo at the top of column 1. Columns:
+  1. Brand / short blurb (logo + 20–30 words)
+  2. Quick links (Home, About, Contact, Privacy, Disclaimer)
+  3. Resources (How BMI is calculated, BMI categories, FAQ)
+  4. Contact & Social — small contact email and social icons (Facebook, X/Twitter, LinkedIn, Instagram) with placeholder links.
+- Include copyright line and small accessibility statement.
+
+5) UI interactions, animations & hover effects
+- Use tasteful, subtle animations only — no flashing content. Accessibility first.
+  - Page: content fade-in on load (reduced motion respects user preference).
+  - Buttons: raise + subtle shadow on hover and smooth transition (transform: translateY(-3px);).
+  - Cards: gentle hover scale (1.02) and box-shadow.
+  - Calculator: animated number counter for BMI result; result panel highlights with a soft pulse once calculated.
+  - Links: smooth color transitions and underline reveal on hover.
+- CSS: prefer hardware-accelerated transforms, use `prefers-reduced-motion` media queries.
+
+6) Accessibility & performance
+- Meet WCAG AA standards: semantic HTML, aria-* attributes, labels, focus rings, contrast ratios (>=4.5:1 for body text).
+- Keyboard accessible; forms usable without mouse.
+- Lighthouse score target: 90+ performance, 90+ accessibility.
+- Images optimized, lazy-loaded, and SVG icons used where possible.
+
+7) SEO & analytics
+- On-page SEO: H1/H2 structure, descriptive alt text, canonical tags, sitemap.xml, robots.txt.
+- Include Open Graph and Twitter Card meta tags for sharing.
+- Include optional Google Analytics / GA4 snippet (commented out) and instructions to enable.
+- Server requirements: simple static hosting is fine (Netlify, Vercel, GitHub Pages).
+- Provide `sitemap.xml` and `robots.txt`.
+
+8) Code & deliverables
+- Deliver as:
+  - Option A: Production static site (HTML/CSS/JS) with assets in `/assets`.
+  - Option B: Single-file React component (default export) plus CSS (Tailwind optional).
+- Provide well-commented code, build instructions, and a README describing how to deploy.
+- Include tests: basic unit test for BMI formula (if React, a Jest test).
+- Provide a preview screenshot and the JSON-LD snippet used.
+
+9) Privacy & legal considerations
+- Do not collect unnecessary personal data. If contact form stores messages, note retention and delete policy in Privacy Policy.
+
+10) Extra notes for the writer/developer
+- Tone: clear, helpful, trustworthy, non-medical (informational).
+- Keyword handling: though the site name and page target the exact phrase **"nhs bmi calculator"**, do not claim affiliation with NHS or imply official endorsement. Add a short note in footer: “Not affiliated with the NHS” (or similar) if necessary to avoid misleading users.
+- Provide a short FAQ (3 items) on the home page that answers: “What is BMI?”, “Is BMI accurate for everyone?”, and “Should I rely on this tool for medical decisions?”.
+
+11) Example copy snippets to include in final deliverable (developer may adapt tone):
+- Hero H1: `nhs bmi calculator — Check your BMI in seconds`
+- Hero subhead: `Quick, easy, and accurate BMI results. Enter height & weight in metric or imperial units.`
+- CTA button: `Calculate your BMI`
+- Tiny footer note: `This tool is for information only and not a substitute for professional medical advice.`
+
+------------------------
+Acceptance criteria (what to provide to me)
+- Fully functional, responsive site or React component deployed locally and zipped for download.
+- All page content (Home, About, Contact, Disclaimer, Privacy) as plain text files and embedded in pages.
+- Meta title + description for each page and the JSON-LD structured data.
+- README with deployment steps, design assets (logo svg/png), sitemap.xml, robots.txt, and optional analytics snippet.
+- A short note confirming accessibility checks performed and Lighthouse score summary (or approximate results locally).
+
+If any item above cannot be implemented exactly (e.g., external API usage), explain why in the README and provide a safe alternative.
