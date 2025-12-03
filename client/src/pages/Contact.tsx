@@ -14,7 +14,6 @@ export default function Contact() {
         description="Get in touch with the team behind nhs bmi calculator. We aim to reply within 48 hours."
         canonical="https://replit.com/contact"
       />
-      
       <div className="container mx-auto px-4 py-16 max-w-5xl">
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-heading font-bold mb-4">Contact Us</h1>
@@ -34,9 +33,7 @@ export default function Contact() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-2">For general inquiries regarding the calculator:</p>
-                <a href="mailto:contact@nhsbmicalculator.mock" className="text-primary font-medium hover:underline">
-                  contact@nhsbmicalculator.mock
-                </a>
+                <a href="mailto:contact@nhsbmicalculator.mock" className="text-primary font-medium hover:underline">Mdjahidulislamf1@gmail.com</a>
               </CardContent>
             </Card>
             
