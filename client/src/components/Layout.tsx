@@ -44,7 +44,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+          <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
             <img
               src={logoImage}
               alt="nhs bmi calculator logo"
@@ -53,7 +53,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <span className="font-heading font-bold text-xl tracking-tight hidden sm:block text-primary-black">
               nhs bmi calculator
             </span>
-          </Link>
+          </a>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex gap-6 items-center">
