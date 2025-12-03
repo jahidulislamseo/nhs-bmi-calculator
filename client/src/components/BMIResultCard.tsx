@@ -87,50 +87,38 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
             <path d={describeArc(centerX, centerY, radius, valueToAngle(25)-0.5, valueToAngle(25)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
             <path d={describeArc(centerX, centerY, radius, valueToAngle(30)-0.5, valueToAngle(30)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
 
-            {/* Category labels */}
-            <text 
-              x={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(9)).x} 
-              y={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(9)).y + 4} 
-              fontSize="9" 
-              fontWeight="600"
-              textAnchor="middle" 
-              fill="#000"
-            >
-              Underweight
+            {/* Category labels - curved along the arc */}
+            <text fontSize="9" fontWeight="600" fill="#000">
+              <textPath href="#arc-underweight" startOffset="50%" textAnchor="middle">
+                Underweight
+              </textPath>
             </text>
 
-            <text 
-              x={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(21.75)).x} 
-              y={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(21.75)).y + 4} 
-              fontSize="9" 
-              fontWeight="600"
-              textAnchor="middle" 
-              fill="#000"
-            >
-              Normal
+            <text fontSize="9" fontWeight="600" fill="#000">
+              <textPath href="#arc-normal" startOffset="50%" textAnchor="middle">
+                Normal
+              </textPath>
             </text>
 
-            <text 
-              x={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(27.5)).x} 
-              y={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(27.5)).y + 4} 
-              fontSize="9" 
-              fontWeight="600"
-              textAnchor="middle" 
-              fill="#000"
-            >
-              Overweight
+            <text fontSize="9" fontWeight="600" fill="#000">
+              <textPath href="#arc-overweight" startOffset="50%" textAnchor="middle">
+                Overweight
+              </textPath>
             </text>
 
-            <text 
-              x={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(35)).x} 
-              y={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(35)).y + 4} 
-              fontSize="9" 
-              fontWeight="600"
-              textAnchor="middle" 
-              fill="#000"
-            >
-              Obesity
+            <text fontSize="9" fontWeight="600" fill="#000">
+              <textPath href="#arc-obesity" startOffset="50%" textAnchor="middle">
+                Obesity
+              </textPath>
             </text>
+
+            {/* Hidden path definitions for text to follow */}
+            <defs>
+              <path id="arc-underweight" d={describeArc(centerX, centerY, radius - 48, valueToAngle(0), valueToAngle(18.5))} />
+              <path id="arc-normal" d={describeArc(centerX, centerY, radius - 48, valueToAngle(18.5), valueToAngle(25))} />
+              <path id="arc-overweight" d={describeArc(centerX, centerY, radius - 48, valueToAngle(25), valueToAngle(30))} />
+              <path id="arc-obesity" d={describeArc(centerX, centerY, radius - 48, valueToAngle(30), valueToAngle(40))} />
+            </defs>
 
             {/* BMI markers */}
             <text x={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(18.5)).x} y={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(18.5)).y + 3} fontSize="8" fontWeight="bold" textAnchor="middle" fill="#000">18.5</text>
