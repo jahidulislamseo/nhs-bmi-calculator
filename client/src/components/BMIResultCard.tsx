@@ -1,4 +1,3 @@
-import { Card } from "@/components/ui/card";
 import { Save } from "lucide-react";
 import { type BMIResult } from "@/lib/bmi";
 
@@ -13,30 +12,34 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
   const kgToLbs = (kg: number) => (kg * 2.20462).toFixed(1);
   const displayWeight = (kg: number) => unit === "imperial" ? `${kgToLbs(kg)} lbs` : `${kg.toFixed(1)} kg`;
 
-  // Gauge calculation
-  // We want a semi-circle (180 degrees).
-  // Range is typically 15 (min) to 40 (max) for the visual chart usually.
-  // Let's define standard positions on a 0-100 scale for the gauge arc.
-  // 16, 17, 18.5, 25, 30, 35, 40
+  // Gauge Constants
+  const radius = 120;
+  const strokeWidth = 30;
+  const centerX = 150;
+  const centerY = 150;
   
-  // Map BMI to angle (0 to 180)
-  // Let's say chart goes from BMI 10 to 45 to cover all bases
+  // Chart Ranges (BMI values)
   const minChart = 12;
   const maxChart = 42;
-  const range = maxChart - minChart;
+  const totalRange = maxChart - minChart;
   
-  const getAngle = (value: number) => {
+  // Angle Mapping (180 degrees total, from 180 to 360 in SVG coords)
+  // 180 deg = Left, 270 deg = Top, 360/0 deg = Right
+  const startAngle = 180;
+  const endAngle = 360;
+  
+  const valueToAngle = (value: number) => {
     const clamped = Math.min(Math.max(value, minChart), maxChart);
-    const percent = (clamped - minChart) / range;
-    return percent * 180; // 0 to 180
+    const percent = (clamped - minChart) / totalRange;
+    return startAngle + (percent * 180);
   };
 
-  const needleAngle = getAngle(result.bmi);
+  const needleAngle = valueToAngle(result.bmi);
 
   // Text color based on category for the header
   const getHeaderColor = () => {
     if (result.category === "Healthy Weight") return "bg-[#4CAF50]"; // Green
-    if (result.category === "Underweight") return "bg-[#FFC107]"; // Yellow/Amber usually, but image implies multicolored. Let's use standard green for header if good.
+    if (result.category === "Underweight") return "bg-[#FBC02D]"; // Yellow-Orange
     if (result.category === "Overweight") return "bg-[#FFEB3B] text-black"; // Yellow
     return "bg-[#D32F2F]"; // Red
   };
@@ -44,7 +47,7 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
   return (
     <div className="w-full max-w-lg mx-auto bg-white rounded-lg shadow-lg overflow-hidden border border-neutral-200">
       {/* Header */}
-      <div className={`${getHeaderColor()} p-3 flex justify-between items-center text-white`}>
+      <div className={`${getHeaderColor()} p-3 flex justify-between items-center text-white transition-colors duration-300`}>
         <h2 className={`text-xl font-bold ${result.category === "Overweight" ? "text-black" : "text-white"}`}>Result</h2>
         <button onClick={onSavePdf} className="flex flex-col items-center text-xs hover:opacity-80 transition-opacity">
           <Save className="h-5 w-5" />
@@ -58,8 +61,8 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
           <span className="text-xl font-bold">BMI = {result.bmi} kg/m² </span>
           <span className={`text-xl font-bold ml-2 ${
             result.category === "Healthy Weight" ? "text-[#4CAF50]" : 
-            result.category === "Overweight" ? "text-[#FBC02D]" : 
-            result.category === "Underweight" ? "text-[#FFA000]" : "text-[#D32F2F]"
+            result.category === "Overweight" ? "text-[#F9A825]" : 
+            result.category === "Underweight" ? "text-[#F57F17]" : "text-[#D32F2F]"
           }`}>
             ({result.category})
           </span>
@@ -68,83 +71,108 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
         {/* Gauge Visualization */}
         <div className="relative h-48 w-full flex justify-center overflow-hidden mb-6">
           <svg viewBox="0 0 300 160" className="w-full max-w-[300px]">
-            {/* Arc Segments */}
-            {/* Underweight < 18.5 */}
-            <path d="M 30 150 A 120 120 0 0 1 88 43" fill="none" stroke="#FFEB3B" strokeWidth="40" /> 
-            {/* Normal 18.5 - 25 */}
-            <path d="M 88 43 A 120 120 0 0 1 150 30" fill="none" stroke="#4CAF50" strokeWidth="40" />
-            <path d="M 150 30 A 120 120 0 0 1 212 43" fill="none" stroke="#4CAF50" strokeWidth="40" />
-            {/* Overweight 25 - 30 */}
-            <path d="M 212 43 A 120 120 0 0 1 258 90" fill="none" stroke="#FFEB3B" strokeWidth="40" />
-            {/* Obese > 30 */}
-            <path d="M 258 90 A 120 120 0 0 1 270 150" fill="none" stroke="#D32F2F" strokeWidth="40" />
-
-            {/* Custom colors overlay to match the image style more closely - Gradient-ish look via multiple segments */}
-            {/* Actually SVG paths above are simplified. Let's try a cleaner approach with precise angles for 18.5, 25, 30 */}
+             {/* Definitions for gradients if we wanted them, but flat colors are requested */}
             
-            {/* 
-               Angles (approximate for visual):
-               Start: 180 deg (Left) -> 0 deg (Right) ? No, SVG coords are different.
-               Let's use a standard gauge approach: 180 degree arc from left to right.
-               Center (150, 150). Radius 120.
-            */}
-            <g transform="translate(150, 150) rotate(180)"> 
-               {/* This rotates the whole thing so 0 is left. */}
-            </g>
-            
-            {/* Re-drawing with precise segments based on our min/max chart values (12 - 42) */}
-            {/* 
-               Total Range: 30 units. 
-               180 degrees / 30 units = 6 degrees per unit.
-               
-               12 (start) -> 0 deg
-               18.5 -> (18.5 - 12) * 6 = 39 deg
-               25 -> (25 - 12) * 6 = 78 deg
-               30 -> (30 - 12) * 6 = 108 deg
-               35 -> (35 - 12) * 6 = 138 deg
-               42 (end) -> 180 deg
+            {/* Segments 
+                Underweight: 12 - 18.5
+                Normal: 18.5 - 25
+                Overweight: 25 - 30
+                Obese: 30 - 42
             */}
             
-            {/* Underweight (12 - 18.5) - Yellow/Red mix */}
-            <path d={describeArc(150, 150, 120, -90, -90 + 39)} fill="none" stroke="#FFC107" strokeWidth="35" />
+            {/* Underweight (Yellow/Orange) */}
+            <path 
+              d={describeArc(centerX, centerY, radius, valueToAngle(12), valueToAngle(18.5))} 
+              fill="none" 
+              stroke="#FFEB3B" 
+              strokeWidth={strokeWidth} 
+            />
             
-            {/* Normal (18.5 - 25) - Green */}
-            <path d={describeArc(150, 150, 120, -90 + 39, -90 + 78)} fill="none" stroke="#4CAF50" strokeWidth="35" />
+            {/* Normal (Green) */}
+            <path 
+              d={describeArc(centerX, centerY, radius, valueToAngle(18.5), valueToAngle(25))} 
+              fill="none" 
+              stroke="#4CAF50" 
+              strokeWidth={strokeWidth} 
+            />
             
-            {/* Overweight (25 - 30) - Yellow */}
-            <path d={describeArc(150, 150, 120, -90 + 78, -90 + 108)} fill="none" stroke="#FFEB3B" strokeWidth="35" />
+            {/* Overweight (Amber/Orange) */}
+            <path 
+              d={describeArc(centerX, centerY, radius, valueToAngle(25), valueToAngle(30))} 
+              fill="none" 
+              stroke="#FFC107" 
+              strokeWidth={strokeWidth} 
+            />
             
-            {/* Obese I (30 - 35) - Orange/Pinkish */}
-            <path d={describeArc(150, 150, 120, -90 + 108, -90 + 138)} fill="none" stroke="#E57373" strokeWidth="35" />
-            
-            {/* Obese II (35 - 42) - Red */}
-            <path d={describeArc(150, 150, 120, -90 + 138, 90)} fill="none" stroke="#D32F2F" strokeWidth="35" />
+            {/* Obese (Red) */}
+            <path 
+              d={describeArc(centerX, centerY, radius, valueToAngle(30), valueToAngle(42))} 
+              fill="none" 
+              stroke="#D32F2F" 
+              strokeWidth={strokeWidth} 
+            />
 
-            {/* Labels inside segments */}
-            <text x="60" y="100" fontSize="10" textAnchor="middle" transform="rotate(-20, 60, 100)" fill="#333">Underweight</text>
-            <text x="120" y="60" fontSize="10" textAnchor="middle" transform="rotate(0, 120, 60)" fill="#333">Normal</text>
-            <text x="190" y="60" fontSize="10" textAnchor="middle" transform="rotate(20, 190, 60)" fill="#333">Overweight</text>
-            <text x="250" y="110" fontSize="10" textAnchor="middle" transform="rotate(45, 250, 110)" fill="#333">Obesity</text>
+            {/* Divider Lines (White) to separate zones clearly */}
+            <path d={describeArc(centerX, centerY, radius, valueToAngle(18.5)-0.5, valueToAngle(18.5)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
+            <path d={describeArc(centerX, centerY, radius, valueToAngle(25)-0.5, valueToAngle(25)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
+            <path d={describeArc(centerX, centerY, radius, valueToAngle(30)-0.5, valueToAngle(30)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
 
-            {/* Ticks */}
+            {/* Text Labels */}
+            {/* Positioned using polar coordinates at a slightly smaller radius */}
+            <text x={polarToCartesian(centerX, centerY, 90, valueToAngle(15.25)).x} y={polarToCartesian(centerX, centerY, 90, valueToAngle(15.25)).y} fontSize="9" textAnchor="middle" transform={`rotate(-60, ${polarToCartesian(centerX, centerY, 90, valueToAngle(15.25)).x}, ${polarToCartesian(centerX, centerY, 90, valueToAngle(15.25)).y})`} fill="#555">Underweight</text>
+            <text x={polarToCartesian(centerX, centerY, 90, valueToAngle(21.75)).x} y={polarToCartesian(centerX, centerY, 90, valueToAngle(21.75)).y} fontSize="9" textAnchor="middle" transform={`rotate(-20, ${polarToCartesian(centerX, centerY, 90, valueToAngle(21.75)).x}, ${polarToCartesian(centerX, centerY, 90, valueToAngle(21.75)).y})`} fill="#555">Normal</text>
+            <text x={polarToCartesian(centerX, centerY, 90, valueToAngle(27.5)).x} y={polarToCartesian(centerX, centerY, 90, valueToAngle(27.5)).y} fontSize="9" textAnchor="middle" transform={`rotate(20, ${polarToCartesian(centerX, centerY, 90, valueToAngle(27.5)).x}, ${polarToCartesian(centerX, centerY, 90, valueToAngle(27.5)).y})`} fill="#555">Overweight</text>
+            <text x={polarToCartesian(centerX, centerY, 90, valueToAngle(36)).x} y={polarToCartesian(centerX, centerY, 90, valueToAngle(36)).y} fontSize="9" textAnchor="middle" transform={`rotate(50, ${polarToCartesian(centerX, centerY, 90, valueToAngle(36)).x}, ${polarToCartesian(centerX, centerY, 90, valueToAngle(36)).y})`} fill="#555">Obesity</text>
+
+
+            {/* Numeric Ticks (Outer) */}
             {/* 18.5 */}
-            <text x={polarToCartesian(150, 150, 145, -90 + 39).x} y={polarToCartesian(150, 150, 145, -90 + 39).y} fontSize="10" textAnchor="middle" fill="#555">18.5</text>
+            <text x={polarToCartesian(centerX, centerY, 145, valueToAngle(18.5)).x} y={polarToCartesian(centerX, centerY, 145, valueToAngle(18.5)).y} fontSize="10" textAnchor="middle" fill="#777">18.5</text>
             {/* 25 */}
-            <text x={polarToCartesian(150, 150, 145, -90 + 78).x} y={polarToCartesian(150, 150, 145, -90 + 78).y} fontSize="10" textAnchor="middle" fill="#555">25</text>
+            <text x={polarToCartesian(centerX, centerY, 145, valueToAngle(25)).x} y={polarToCartesian(centerX, centerY, 145, valueToAngle(25)).y} fontSize="10" textAnchor="middle" fill="#777">25</text>
             {/* 30 */}
-            <text x={polarToCartesian(150, 150, 145, -90 + 108).x} y={polarToCartesian(150, 150, 145, -90 + 108).y} fontSize="10" textAnchor="middle" fill="#555">30</text>
-            {/* 35 */}
-            <text x={polarToCartesian(150, 150, 145, -90 + 138).x} y={polarToCartesian(150, 150, 145, -90 + 138).y} fontSize="10" textAnchor="middle" fill="#555">35</text>
+            <text x={polarToCartesian(centerX, centerY, 145, valueToAngle(30)).x} y={polarToCartesian(centerX, centerY, 145, valueToAngle(30)).y} fontSize="10" textAnchor="middle" fill="#777">30</text>
 
 
             {/* Needle */}
-            <g transform={`rotate(${needleAngle - 90}, 150, 150)`}>
-              <path d="M145 150 L150 35 L155 150 Z" fill="#333" />
-              <circle cx="150" cy="150" r="6" fill="#555" />
+            {/* Rotate around center. -90 offset because standard 0 is right, we want 0 to be top? No, SVG rotate is clockwise.
+                At 180 deg (Start), we want needle pointing left.
+                Standard needle points Up (if drawn M145 150...).
+                So at 180, we need it rotated -90?
+                Let's just use the calculated angle directly and adjust the drawing.
+                If we draw needle pointing RIGHT (0 deg), then we just use the angle.
+            */}
+            <g transform={`rotate(${needleAngle}, ${centerX}, ${centerY})`}>
+               {/* Draw needle pointing to 0 (Right) initially? No, let's stick to standard rotation. */}
+               {/* If needle points Left at 0 rotation, then at 180 it points Right.
+                   Let's draw needle pointing LEFT initially (180 deg position in SVG).
+                   Then we rotate by (angle - 180).
+                   Actually simpler: Draw needle pointing RIGHT (0 deg).
+                   Then rotate by `needleAngle`. 
+                   Since needleAngle goes 180 -> 360.
+                   180 = Left. 270 = Up. 360 = Right.
+               */}
+              <path d={`M ${centerX-5} ${centerY} L ${centerX} ${centerY-radius+10} L ${centerX+5} ${centerY} Z`} fill="#333" transform={`rotate(90, ${centerX}, ${centerY})`} /> 
+              {/* Wait, simple math:
+                  Draw needle pointing UP (270 deg).
+                  Then rotate by (needleAngle - 270).
+              */}
+            </g>
+            
+            {/* Let's try a simpler needle group */}
+            <g transform={`translate(${centerX}, ${centerY}) rotate(${needleAngle})`}>
+               {/* 
+                   At angle 0 (Right), we want it pointing Right.
+                   At angle 270 (Top), we want it pointing Top.
+                   So we draw a needle pointing to 0 (Right).
+               */}
+               <path d="M 0 -5 L 110 0 L 0 5 Z" fill="#333" />
+               <circle cx="0" cy="0" r="8" fill="#555" />
             </g>
 
+
             {/* Central BMI Text */}
-            <text x="150" y="135" fontSize="24" fontWeight="bold" textAnchor="middle" fill="black">BMI = {result.bmi}</text>
+            <text x={centerX} y={centerY - 20} fontSize="28" fontWeight="bold" textAnchor="middle" fill="black">BMI = {result.bmi}</text>
           </svg>
         </div>
 
