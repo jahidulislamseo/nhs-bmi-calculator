@@ -7,7 +7,7 @@ export default function Home() {
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "nhs bmi calculator",
+    "name": "Nhs BMI Calculator",
     "url": "https://replit.com",
     "description": "Free tool to calculate Body Mass Index (BMI).",
     "applicationCategory": "HealthApplication",
@@ -17,8 +17,8 @@ export default function Home() {
   return (
     <>
       <Head 
-        title="nhs bmi calculator — Fast & Accurate BMI Tool" 
-        description="Use the free nhs bmi calculator to check your body mass index quickly. Metric & imperial inputs, BMI categories, and health guidance."
+        title="Nhs BMI Calculator Fast & Accurate BMI Tool" 
+        description="Use the free Nhs BMI Calculator to check your body mass index quickly. Metric & imperial inputs, BMI categories, and health guidance."
         canonical="https://replit.com/"
       />
       <script type="application/ld+json">
@@ -35,10 +35,10 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 text-center lg:text-left">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-primary-black leading-tight">
-                nhs bmi calculator — <span className="text-primary">Check your BMI in seconds</span>
+                Nhs BMI Calculator <span className="text-primary">Check your BMI in seconds</span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                Quick, easy, and accurate BMI results. Enter height & weight in metric or imperial units to understand your health better with our trusted <strong>nhs bmi calculator</strong> tool.
+                Quick, easy, and accurate BMI results. Enter height & weight in metric or imperial units to understand your health better with our trusted <strong>Nhs BMI Calculator</strong> tool.
               </p>
               <div className="pt-4 hidden lg:block">
                 <p className="text-sm text-muted-foreground mb-2">Trusted by thousands for fast health checks.</p>
@@ -63,9 +63,9 @@ export default function Home() {
           <div className="prose prose-lg mx-auto text-muted-foreground">
             <h2 className="text-3xl font-heading font-bold text-foreground mb-6">Understanding Your BMI Result</h2>
             <p>
-              The <strong>nhs bmi calculator</strong> is a powerful yet simple tool designed to help you determine if you are a healthy weight for your height. 
+              The <strong>Nhs BMI Calculator</strong> is a powerful yet simple tool designed to help you determine if you are a healthy weight for your height. 
               Body Mass Index (BMI) is a widely used measure that uses your height and weight to work out if your weight is healthy. 
-              The BMI calculation divides an adult's weight in kilograms by their height in metres squared. By using this <strong>nhs bmi calculator</strong>, 
+              The BMI calculation divides an adult's weight in kilograms by their height in metres squared. By using this <strong>Nhs BMI Calculator</strong>, 
               you can quickly get an indication of your body fatness and potential health risks.
             </p>
             
@@ -73,19 +73,19 @@ export default function Home() {
             <p>
               Knowing your BMI is a great starting point for understanding your general health. Being underweight, overweight, or obese can increase your risk of developing certain health conditions.
               For example, carrying excess weight can increase the risk of type 2 diabetes, heart disease, and stroke. Conversely, being underweight could suggest nutritional deficiencies or other health issues.
-              Our <strong>nhs bmi calculator</strong> provides an immediate estimate, allowing you to take proactive steps towards a healthier lifestyle.
+              Our <strong>Nhs BMI Calculator</strong> provides an immediate estimate, allowing you to take proactive steps towards a healthier lifestyle.
             </p>
 
             <h3 className="text-2xl font-heading font-semibold text-foreground mt-8 mb-4">How to measure yourself accurately</h3>
             <p>
-              To get the most accurate result from the <strong>nhs bmi calculator</strong>, you need precise measurements:
+              To get the most accurate result from the <strong>Nhs BMI Calculator</strong>, you need precise measurements:
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>Height:</strong> Stand tall against a flat wall without shoes. Look straight ahead and have someone measure from the floor to the top of your head.</li>
               <li><strong>Weight:</strong> Use a reliable digital scale. Weigh yourself at the same time of day, ideally in the morning before eating and without heavy clothing.</li>
             </ul>
 
-            <h3 className="text-2xl font-heading font-semibold text-foreground mt-8 mb-4">Who should use the nhs bmi calculator?</h3>
+            <h3 className="text-2xl font-heading font-semibold text-foreground mt-8 mb-4">Who should use the Nhs BMI Calculator?</h3>
             <p>
               This tool is suitable for most adults aged 18 and over. It provides a general indication of whether you're 
               carrying too much weight. However, it's not a diagnostic tool. Muscle mass, age, and ethnicity can all 
@@ -102,7 +102,7 @@ export default function Home() {
             
             <div className="bg-neutral-50 p-6 rounded-lg border-l-4 border-primary mt-8">
               <p className="font-medium text-foreground m-0">
-                <strong>Note:</strong> If the <strong>nhs bmi calculator</strong> suggests you are outside the healthy range, 
+                <strong>Note:</strong> If the <strong>Nhs BMI Calculator</strong> suggests you are outside the healthy range, 
                 don't panic. This result is just one indicator of health. Consider consulting a GP or healthcare professional for advice tailored to your specific circumstances.
               </p>
             </div>
@@ -118,19 +118,19 @@ export default function Home() {
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-lg font-medium text-left">What is BMI and how is it calculated?</AccordionTrigger>
               <AccordionContent className="text-muted-foreground">
-                BMI stands for Body Mass Index. It is a simple calculation using a person's height and weight. The formula is BMI = kg/m² where kg is a person's weight in kilograms and m² is their height in metres squared. Our <strong>nhs bmi calculator</strong> does this math for you instantly.
+                BMI stands for Body Mass Index. It is a simple calculation using a person's height and weight. The formula is BMI = kg/m² where kg is a person's weight in kilograms and m² is their height in metres squared. Our <strong>Nhs BMI Calculator</strong> does this math for you instantly.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
               <AccordionTrigger className="text-lg font-medium text-left">Is BMI accurate for everyone?</AccordionTrigger>
               <AccordionContent className="text-muted-foreground">
-                No, BMI has limitations. It does not distinguish between excess fat, muscle, or bone mass, nor does it provide any indication of the distribution of fat among individuals. It may not be accurate for athletes, pregnant women, or the elderly. However, for the general population, the <strong>nhs bmi calculator</strong> is a useful screening tool.
+                No, BMI has limitations. It does not distinguish between excess fat, muscle, or bone mass, nor does it provide any indication of the distribution of fat among individuals. It may not be accurate for athletes, pregnant women, or the elderly. However, for the general population, the <strong>Nhs BMI Calculator</strong> is a useful screening tool.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
               <AccordionTrigger className="text-lg font-medium text-left">Should I rely on this tool for medical decisions?</AccordionTrigger>
               <AccordionContent className="text-muted-foreground">
-                No. The <strong>nhs bmi calculator</strong> is an informational tool only. You should never rely on this tool for medical diagnosis or decisions. Always consult a qualified healthcare professional for medical advice regarding your specific health needs.
+                No. The <strong>Nhs BMI Calculator</strong> is an informational tool only. You should never rely on this tool for medical diagnosis or decisions. Always consult a qualified healthcare professional for medical advice regarding your specific health needs.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-4">

@@ -47,11 +47,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
             <img
               src={logoImage}
-              alt="nhs bmi calculator logo"
+              alt="Nhs BMI Calculator logo"
               className="h-10 w-auto object-contain"
             />
             <span className="font-heading font-bold text-xl tracking-tight hidden sm:block text-primary-black">
-              nhs bmi calculator
+              Nhs BMI Calculator
             </span>
           </a>
 
@@ -127,8 +127,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Column 1: Brand */}
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-2">
-                <img src={logoImage} alt="nhs bmi calculator" className="h-8 w-auto" />
-                <span className="font-heading font-bold text-lg">nhs bmi calculator</span>
+                <img src={logoImage} alt="Nhs BMI Calculator" className="h-8 w-auto" />
+                <span className="font-heading font-bold text-lg">Nhs BMI Calculator</span>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 A fast, accurate, and accessible tool to check your Body Mass Index. designed to help you understand your health metrics better.
@@ -177,7 +177,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="border-t border-neutral-200 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-xs text-muted-foreground text-center md:text-left">
-              &copy; {new Date().getFullYear()} nhs bmi calculator. All rights reserved.
+              &copy; {new Date().getFullYear()} Nhs BMI Calculator. All rights reserved.
             </p>
             <p className="text-xs text-muted-foreground italic">
               Not affiliated with the NHS. This tool is for information only and not a substitute for professional medical advice.
