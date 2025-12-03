@@ -1,4 +1,3 @@
-
 import { Save } from "lucide-react";
 import { type BMIResult } from "@/lib/bmi";
 
@@ -16,13 +15,13 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
   const strokeWidth = 35;
   const centerX = 150;
   const centerY = 150;
-  
+
   const minChart = 0;
   const maxChart = 40;
   const totalRange = maxChart - minChart;
-  
+
   const startAngle = 180;
-  
+
   const valueToAngle = (value: number) => {
     const clamped = Math.min(Math.max(value, minChart), maxChart);
     const percent = (clamped - minChart) / totalRange;
@@ -58,7 +57,7 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
               stroke="#65B741" 
               strokeWidth={strokeWidth} 
             />
-            
+
             {/* Normal/Healthy - Dark Green */}
             <path 
               d={describeArc(centerX, centerY, radius, valueToAngle(18.5), valueToAngle(25))} 
@@ -66,7 +65,7 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
               stroke="#4CAF50" 
               strokeWidth={strokeWidth} 
             />
-            
+
             {/* Overweight - Yellow */}
             <path 
               d={describeArc(centerX, centerY, radius, valueToAngle(25), valueToAngle(30))} 
@@ -74,7 +73,7 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
               stroke="#FDD835" 
               strokeWidth={strokeWidth} 
             />
-            
+
             {/* Obesity - Red/Pink */}
             <path 
               d={describeArc(centerX, centerY, radius, valueToAngle(30), valueToAngle(40))} 
@@ -99,7 +98,7 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
             >
               Underweight
             </text>
-            
+
             <text 
               x={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(21.75)).x} 
               y={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(21.75)).y + 4} 
@@ -110,7 +109,7 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
             >
               Normal
             </text>
-            
+
             <text 
               x={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(27.5)).x} 
               y={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(27.5)).y + 4} 
@@ -121,7 +120,7 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
             >
               Overweight
             </text>
-            
+
             <text 
               x={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(35)).x} 
               y={polarToCartesian(centerX, centerY, radius - 48, valueToAngle(35)).y + 4} 
@@ -144,7 +143,7 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
               BMI = {result.bmi}
             </text>
 
-            {/* Needle - Simple upward pointing triangle */}
+            {/* Needle - pointing precisely at BMI value */}
             <g transform={`translate(${centerX}, ${centerY}) rotate(${needleAngle - 90})`}>
                <polygon points="0,-68 -5,0 5,0" fill="#333" />
                <circle cx="0" cy="0" r="5" fill="#888" />
