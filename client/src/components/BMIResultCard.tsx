@@ -139,15 +139,15 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
             <text x={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(30)).x} y={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(30)).y + 3} fontSize="8" fontWeight="bold" textAnchor="middle" fill="#000">30</text>
             <text x={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(40)).x} y={polarToCartesian(centerX, centerY, radius + 22, valueToAngle(40)).y + 3} fontSize="8" fontWeight="bold" textAnchor="middle" fill="#000">40</text>
 
-            {/* Central BMI Text */}
-            <text x={centerX} y={centerY + 25} fontSize="22" fontWeight="bold" textAnchor="middle" fill="#000">
+            {/* Central BMI Text - positioned above the needle center */}
+            <text x={centerX} y={centerY + 20} fontSize="20" fontWeight="bold" textAnchor="middle" fill="#000">
               BMI = {result.bmi}
             </text>
 
-            {/* Needle - Simple triangle pointer */}
+            {/* Needle - Simple upward pointing triangle */}
             <g transform={`translate(${centerX}, ${centerY}) rotate(${needleAngle - 90})`}>
-               <polygon points="0,-70 -8,5 8,5" fill="#333" />
-               <circle cx="0" cy="0" r="8" fill="#666" />
+               <polygon points="0,-65 -6,0 6,0" fill="#333" />
+               <circle cx="0" cy="0" r="6" fill="#888" />
             </g>
           </svg>
         </div>
