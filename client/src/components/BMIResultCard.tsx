@@ -59,8 +59,8 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
         </div>
 
         {/* Gauge Visualization */}
-        <div className="relative h-48 w-full flex justify-center overflow-hidden mb-4">
-          <svg viewBox="0 0 300 160" className="w-full max-w-[320px]">
+        <div className="relative h-56 w-full flex justify-center overflow-hidden mb-4">
+          <svg viewBox="0 0 300 220" className="w-full max-w-[320px]">
             
             {/* Segments */}
             {/* Underweight: minChart to 18.5 - Red */}
@@ -159,7 +159,7 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
             ))}
 
             {/* Big BMI Text BELOW the needle pivot */}
-            <text x={centerX} y={centerY + 40} fontSize="28" fontWeight="bold" textAnchor="middle" fill="#000">
+            <text x={centerX} y={centerY + 65} fontSize="28" fontWeight="bold" textAnchor="middle" fill="#000">
               BMI = {result.bmi}
             </text>
 
