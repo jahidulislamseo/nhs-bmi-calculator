@@ -114,12 +114,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </header>
-
       {/* Main Content */}
       <main className="flex-1">
         {children}
       </main>
-
       {/* Footer */}
       <footer className="bg-neutral-100 border-t border-neutral-200 pt-12 pb-8">
         <div className="container mx-auto px-4">
@@ -166,9 +164,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Column 4: Contact & Social */}
             <div className="flex flex-col gap-4">
               <h3 className="font-heading font-semibold text-foreground">Connect</h3>
-              <a href="mailto:contact@nhsbmicalculator.mock" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                contact@nhsbmicalculator.mock
-              </a>
+              <a href="mailto:contact@nhsbmicalculator.mock" className="text-sm text-muted-foreground hover:text-primary transition-colors">Mdjahidulislam@gmail.com</a>
               <div className="flex gap-4">
                 <a href="#" aria-label="Facebook" className="text-muted-foreground hover:text-primary transition-colors"><Facebook size={20} /></a>
                 <a href="#" aria-label="Twitter" className="text-muted-foreground hover:text-primary transition-colors"><TwitterIcon className="w-5 h-5" /></a>
