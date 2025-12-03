@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Mail, Clock, MapPin } from "lucide-react";
+import { Mail, Clock, MapPin, MessageSquare } from "lucide-react";
 
 export default function Contact() {
   return (
@@ -18,7 +18,7 @@ export default function Contact() {
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-heading font-bold mb-4">Contact Us</h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Have questions, feedback, or found a bug? We'd love to hear from you. 
+            Have questions about the <strong>nhs bmi calculator</strong>, feedback on how we can improve, or found a bug? We'd love to hear from you. 
             Fill out the form below and we'll get back to you as soon as possible.
           </p>
         </div>
@@ -32,7 +32,7 @@ export default function Contact() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-2">For general inquiries:</p>
+                <p className="text-sm text-muted-foreground mb-2">For general inquiries regarding the calculator:</p>
                 <a href="mailto:contact@nhsbmicalculator.mock" className="text-primary font-medium hover:underline">
                   contact@nhsbmicalculator.mock
                 </a>
@@ -47,7 +47,7 @@ export default function Contact() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  We aim to reply to all legitimate inquiries within <strong>48 hours</strong>, Monday to Friday.
+                  We value your feedback. We aim to reply to all legitimate inquiries regarding the <strong>nhs bmi calculator</strong> within <strong>48 hours</strong>, Monday to Friday.
                 </p>
               </CardContent>
             </Card>
@@ -62,6 +62,18 @@ export default function Contact() {
                 <p className="text-sm text-muted-foreground">
                   London, United Kingdom
                 </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                 <CardTitle className="flex items-center gap-2 text-base">
+                  <MessageSquare className="h-4 w-4 text-primary" /> Quick Help
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p><strong>Found a bug?</strong> Please let us know which browser you are using.</p>
+                <p><strong>Feature request?</strong> We are always adding new features to the <strong>nhs bmi calculator</strong>.</p>
               </CardContent>
             </Card>
           </div>
@@ -95,6 +107,10 @@ export default function Contact() {
                   <div className="hidden">
                     <label htmlFor="website">Website</label>
                     <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+                  </div>
+
+                  <div className="text-xs text-muted-foreground">
+                    By submitting this form, you agree to our privacy policy. We will only use your details to reply to your message.
                   </div>
 
                   <Button type="submit" className="w-full bg-primary hover:bg-primary/90">Send Message</Button>
