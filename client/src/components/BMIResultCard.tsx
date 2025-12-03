@@ -100,46 +100,54 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
             <path d={describeArc(centerX, centerY, radius, valueToAngle(25)-0.5, valueToAngle(25)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
             <path d={describeArc(centerX, centerY, radius, valueToAngle(30)-0.5, valueToAngle(30)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
 
-            {/* Labels outside the arc - using textPath to follow the curve */}
-            {/* Hidden paths for text alignment */}
-            <defs>
-              <path id="arc-underweight" d={describeArc(centerX, centerY, radius + 12, valueToAngle(minChart), valueToAngle(18.5))} />
-              <path id="arc-normal" d={describeArc(centerX, centerY, radius + 12, valueToAngle(18.5), valueToAngle(25))} />
-              <path id="arc-overweight" d={describeArc(centerX, centerY, radius + 12, valueToAngle(25), valueToAngle(30))} />
-              <path id="arc-obesity" d={describeArc(centerX, centerY, radius + 12, valueToAngle(30), valueToAngle(maxChart))} />
-            </defs>
+            {/* Labels outside the arc - Manual placement for better control */}
+            {/* Underweight (approx 16.75) */}
+            <text 
+              x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(16.75)).x} 
+              y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(16.75)).y} 
+              fontSize="11" 
+              transform={`rotate(${valueToAngle(16.75) - 270}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(16.75)).x}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(16.75)).y})`}
+              textAnchor="middle" 
+              fill="#000"
+            >Underweight</text>
 
-            <text fontSize="10" fill="#000">
-              <textPath href="#arc-underweight" startOffset="50%" textAnchor="middle">
-                Underweight
-              </textPath>
-            </text>
-            
-            <text fontSize="10" fill="#000">
-              <textPath href="#arc-normal" startOffset="50%" textAnchor="middle">
-                Normal
-              </textPath>
-            </text>
-            
-            <text fontSize="10" fill="#000">
-              <textPath href="#arc-overweight" startOffset="50%" textAnchor="middle">
-                Overweight
-              </textPath>
-            </text>
-            
-            <text fontSize="10" fill="#000">
-              <textPath href="#arc-obesity" startOffset="50%" textAnchor="middle">
-                Obesity
-              </textPath>
-            </text>
+            {/* Normal (approx 21.75) */}
+            <text 
+              x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(21.75)).x} 
+              y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(21.75)).y} 
+              fontSize="11" 
+              transform={`rotate(${valueToAngle(21.75) - 270}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(21.75)).x}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(21.75)).y})`}
+              textAnchor="middle" 
+              fill="#000"
+            >Normal</text>
+
+            {/* Overweight (approx 27.5) */}
+            <text 
+              x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(27.5)).x} 
+              y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(27.5)).y} 
+              fontSize="11" 
+              transform={`rotate(${valueToAngle(27.5) - 270}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(27.5)).x}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(27.5)).y})`}
+              textAnchor="middle" 
+              fill="#000"
+            >Overweight</text>
+
+            {/* Obesity (approx 35) */}
+            <text 
+              x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(35)).x} 
+              y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(35)).y} 
+              fontSize="11" 
+              transform={`rotate(${valueToAngle(35) - 270}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(35)).x}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(35)).y})`}
+              textAnchor="middle" 
+              fill="#000"
+            >Obesity</text>
 
             {/* Tick Values - Inside the band, White */}
             {[16, 17, 18.5, 25, 30, 35, 40].map(val => (
                val >= minChart && val <= maxChart && (
                 <text 
                   key={val}
-                  x={polarToCartesian(centerX, centerY, radius - 15, valueToAngle(val)).x} 
-                  y={polarToCartesian(centerX, centerY, radius - 15, valueToAngle(val)).y + 4} 
+                  x={polarToCartesian(centerX, centerY, radius, valueToAngle(val)).x} 
+                  y={polarToCartesian(centerX, centerY, radius, valueToAngle(val)).y + 4} 
                   fontSize="9" 
                   fontWeight="bold" 
                   textAnchor="middle" 
@@ -150,8 +158,8 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
                )
             ))}
 
-            {/* Big BMI Text in Center */}
-            <text x={centerX} y={centerY - 20} fontSize="28" fontWeight="bold" textAnchor="middle" fill="#000">
+            {/* Big BMI Text BELOW the needle pivot */}
+            <text x={centerX} y={centerY + 40} fontSize="28" fontWeight="bold" textAnchor="middle" fill="#000">
               BMI = {result.bmi}
             </text>
 
