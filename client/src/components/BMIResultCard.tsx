@@ -100,31 +100,46 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
             <path d={describeArc(centerX, centerY, radius, valueToAngle(25)-0.5, valueToAngle(25)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
             <path d={describeArc(centerX, centerY, radius, valueToAngle(30)-0.5, valueToAngle(30)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
 
-            {/* Labels outside the arc */}
-            <text x={polarToCartesian(centerX, centerY, radius + 40, valueToAngle(16.5)).x} y={polarToCartesian(centerX, centerY, radius + 40, valueToAngle(16.5)).y} 
-                  fontSize="10" transform={`rotate(-65, ${polarToCartesian(centerX, centerY, radius + 40, valueToAngle(16.5)).x}, ${polarToCartesian(centerX, centerY, radius + 40, valueToAngle(16.5)).y})`} 
-                  textAnchor="middle" fill="#000">Underweight</text>
-            
-            <text x={polarToCartesian(centerX, centerY, radius + 40, valueToAngle(21.75)).x} y={polarToCartesian(centerX, centerY, radius + 40, valueToAngle(21.75)).y} 
-                  fontSize="10" transform={`rotate(-25, ${polarToCartesian(centerX, centerY, radius + 40, valueToAngle(21.75)).x}, ${polarToCartesian(centerX, centerY, radius + 40, valueToAngle(21.75)).y})`} 
-                  textAnchor="middle" fill="#000">Normal</text>
-            
-            <text x={polarToCartesian(centerX, centerY, radius + 40, valueToAngle(27.5)).x} y={polarToCartesian(centerX, centerY, radius + 40, valueToAngle(27.5)).y} 
-                  fontSize="10" transform={`rotate(25, ${polarToCartesian(centerX, centerY, radius + 40, valueToAngle(27.5)).x}, ${polarToCartesian(centerX, centerY, radius + 40, valueToAngle(27.5)).y})`} 
-                  textAnchor="middle" fill="#000">Overweight</text>
-            
-            <text x={polarToCartesian(centerX, centerY, radius + 40, valueToAngle(35)).x} y={polarToCartesian(centerX, centerY, radius + 40, valueToAngle(35)).y} 
-                  fontSize="10" transform={`rotate(60, ${polarToCartesian(centerX, centerY, radius + 40, valueToAngle(35)).x}, ${polarToCartesian(centerX, centerY, radius + 40, valueToAngle(35)).y})`} 
-                  textAnchor="middle" fill="#000">Obesity</text>
+            {/* Labels outside the arc - using textPath to follow the curve */}
+            {/* Hidden paths for text alignment */}
+            <defs>
+              <path id="arc-underweight" d={describeArc(centerX, centerY, radius + 12, valueToAngle(minChart), valueToAngle(18.5))} />
+              <path id="arc-normal" d={describeArc(centerX, centerY, radius + 12, valueToAngle(18.5), valueToAngle(25))} />
+              <path id="arc-overweight" d={describeArc(centerX, centerY, radius + 12, valueToAngle(25), valueToAngle(30))} />
+              <path id="arc-obesity" d={describeArc(centerX, centerY, radius + 12, valueToAngle(30), valueToAngle(maxChart))} />
+            </defs>
 
+            <text fontSize="10" fill="#000">
+              <textPath href="#arc-underweight" startOffset="50%" textAnchor="middle">
+                Underweight
+              </textPath>
+            </text>
+            
+            <text fontSize="10" fill="#000">
+              <textPath href="#arc-normal" startOffset="50%" textAnchor="middle">
+                Normal
+              </textPath>
+            </text>
+            
+            <text fontSize="10" fill="#000">
+              <textPath href="#arc-overweight" startOffset="50%" textAnchor="middle">
+                Overweight
+              </textPath>
+            </text>
+            
+            <text fontSize="10" fill="#000">
+              <textPath href="#arc-obesity" startOffset="50%" textAnchor="middle">
+                Obesity
+              </textPath>
+            </text>
 
             {/* Tick Values - Inside the band, White */}
             {[16, 17, 18.5, 25, 30, 35, 40].map(val => (
                val >= minChart && val <= maxChart && (
                 <text 
                   key={val}
-                  x={polarToCartesian(centerX, centerY, radius, valueToAngle(val)).x} 
-                  y={polarToCartesian(centerX, centerY, radius, valueToAngle(val)).y + 3} 
+                  x={polarToCartesian(centerX, centerY, radius - 15, valueToAngle(val)).x} 
+                  y={polarToCartesian(centerX, centerY, radius - 15, valueToAngle(val)).y + 4} 
                   fontSize="9" 
                   fontWeight="bold" 
                   textAnchor="middle" 
