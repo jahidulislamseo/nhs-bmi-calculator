@@ -117,59 +117,67 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
             <path d={describeArc(centerX, centerY, radius, valueToAngle(25)-0.5, valueToAngle(25)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
             <path d={describeArc(centerX, centerY, radius, valueToAngle(30)-0.5, valueToAngle(30)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
 
-            {/* Text Labels */}
-            {/* Positioned using polar coordinates at a slightly smaller radius */}
-            <text x={polarToCartesian(centerX, centerY, 90, valueToAngle(15.25)).x} y={polarToCartesian(centerX, centerY, 90, valueToAngle(15.25)).y} fontSize="9" textAnchor="middle" transform={`rotate(-60, ${polarToCartesian(centerX, centerY, 90, valueToAngle(15.25)).x}, ${polarToCartesian(centerX, centerY, 90, valueToAngle(15.25)).y})`} fill="#555">Underweight</text>
-            <text x={polarToCartesian(centerX, centerY, 90, valueToAngle(21.75)).x} y={polarToCartesian(centerX, centerY, 90, valueToAngle(21.75)).y} fontSize="9" textAnchor="middle" transform={`rotate(-20, ${polarToCartesian(centerX, centerY, 90, valueToAngle(21.75)).x}, ${polarToCartesian(centerX, centerY, 90, valueToAngle(21.75)).y})`} fill="#555">Normal</text>
-            <text x={polarToCartesian(centerX, centerY, 90, valueToAngle(27.5)).x} y={polarToCartesian(centerX, centerY, 90, valueToAngle(27.5)).y} fontSize="9" textAnchor="middle" transform={`rotate(20, ${polarToCartesian(centerX, centerY, 90, valueToAngle(27.5)).x}, ${polarToCartesian(centerX, centerY, 90, valueToAngle(27.5)).y})`} fill="#555">Overweight</text>
-            <text x={polarToCartesian(centerX, centerY, 90, valueToAngle(36)).x} y={polarToCartesian(centerX, centerY, 90, valueToAngle(36)).y} fontSize="9" textAnchor="middle" transform={`rotate(50, ${polarToCartesian(centerX, centerY, 90, valueToAngle(36)).x}, ${polarToCartesian(centerX, centerY, 90, valueToAngle(36)).y})`} fill="#555">Obesity</text>
+            {/* Text Labels - MOVED OUTSIDE / ABOVE */}
+            {/* Positioned using polar coordinates at a LARGER radius (e.g., 140) to sit above the arc */}
+            <text 
+              x={polarToCartesian(centerX, centerY, 140, valueToAngle(15.25)).x} 
+              y={polarToCartesian(centerX, centerY, 140, valueToAngle(15.25)).y} 
+              fontSize="9" 
+              textAnchor="middle" 
+              transform={`rotate(-50, ${polarToCartesian(centerX, centerY, 140, valueToAngle(15.25)).x}, ${polarToCartesian(centerX, centerY, 140, valueToAngle(15.25)).y})`} 
+              fill="#555"
+            >
+              Underweight
+            </text>
+            
+            <text 
+              x={polarToCartesian(centerX, centerY, 140, valueToAngle(21.75)).x} 
+              y={polarToCartesian(centerX, centerY, 140, valueToAngle(21.75)).y} 
+              fontSize="9" 
+              textAnchor="middle" 
+              transform={`rotate(-20, ${polarToCartesian(centerX, centerY, 140, valueToAngle(21.75)).x}, ${polarToCartesian(centerX, centerY, 140, valueToAngle(21.75)).y})`} 
+              fill="#555"
+            >
+              Normal
+            </text>
+            
+            <text 
+              x={polarToCartesian(centerX, centerY, 140, valueToAngle(27.5)).x} 
+              y={polarToCartesian(centerX, centerY, 140, valueToAngle(27.5)).y} 
+              fontSize="9" 
+              textAnchor="middle" 
+              transform={`rotate(20, ${polarToCartesian(centerX, centerY, 140, valueToAngle(27.5)).x}, ${polarToCartesian(centerX, centerY, 140, valueToAngle(27.5)).y})`} 
+              fill="#555"
+            >
+              Overweight
+            </text>
+            
+            <text 
+              x={polarToCartesian(centerX, centerY, 140, valueToAngle(36)).x} 
+              y={polarToCartesian(centerX, centerY, 140, valueToAngle(36)).y} 
+              fontSize="9" 
+              textAnchor="middle" 
+              transform={`rotate(50, ${polarToCartesian(centerX, centerY, 140, valueToAngle(36)).x}, ${polarToCartesian(centerX, centerY, 140, valueToAngle(36)).y})`} 
+              fill="#555"
+            >
+              Obesity
+            </text>
 
 
-            {/* Numeric Ticks (Outer) */}
+            {/* Numeric Ticks (Inside now, since labels are outside) */}
             {/* 18.5 */}
-            <text x={polarToCartesian(centerX, centerY, 145, valueToAngle(18.5)).x} y={polarToCartesian(centerX, centerY, 145, valueToAngle(18.5)).y} fontSize="10" textAnchor="middle" fill="#777">18.5</text>
+            <text x={polarToCartesian(centerX, centerY, 95, valueToAngle(18.5)).x} y={polarToCartesian(centerX, centerY, 95, valueToAngle(18.5)).y} fontSize="10" textAnchor="middle" fill="#777">18.5</text>
             {/* 25 */}
-            <text x={polarToCartesian(centerX, centerY, 145, valueToAngle(25)).x} y={polarToCartesian(centerX, centerY, 145, valueToAngle(25)).y} fontSize="10" textAnchor="middle" fill="#777">25</text>
+            <text x={polarToCartesian(centerX, centerY, 95, valueToAngle(25)).x} y={polarToCartesian(centerX, centerY, 95, valueToAngle(25)).y} fontSize="10" textAnchor="middle" fill="#777">25</text>
             {/* 30 */}
-            <text x={polarToCartesian(centerX, centerY, 145, valueToAngle(30)).x} y={polarToCartesian(centerX, centerY, 145, valueToAngle(30)).y} fontSize="10" textAnchor="middle" fill="#777">30</text>
+            <text x={polarToCartesian(centerX, centerY, 95, valueToAngle(30)).x} y={polarToCartesian(centerX, centerY, 95, valueToAngle(30)).y} fontSize="10" textAnchor="middle" fill="#777">30</text>
 
 
             {/* Needle */}
-            {/* Rotate around center. -90 offset because standard 0 is right, we want 0 to be top? No, SVG rotate is clockwise.
-                At 180 deg (Start), we want needle pointing left.
-                Standard needle points Up (if drawn M145 150...).
-                So at 180, we need it rotated -90?
-                Let's just use the calculated angle directly and adjust the drawing.
-                If we draw needle pointing RIGHT (0 deg), then we just use the angle.
-            */}
-            <g transform={`rotate(${needleAngle}, ${centerX}, ${centerY})`}>
-               {/* Draw needle pointing to 0 (Right) initially? No, let's stick to standard rotation. */}
-               {/* If needle points Left at 0 rotation, then at 180 it points Right.
-                   Let's draw needle pointing LEFT initially (180 deg position in SVG).
-                   Then we rotate by (angle - 180).
-                   Actually simpler: Draw needle pointing RIGHT (0 deg).
-                   Then rotate by `needleAngle`. 
-                   Since needleAngle goes 180 -> 360.
-                   180 = Left. 270 = Up. 360 = Right.
-               */}
-              <path d={`M ${centerX-5} ${centerY} L ${centerX} ${centerY-radius+10} L ${centerX+5} ${centerY} Z`} fill="#333" transform={`rotate(90, ${centerX}, ${centerY})`} /> 
-              {/* Wait, simple math:
-                  Draw needle pointing UP (270 deg).
-                  Then rotate by (needleAngle - 270).
-              */}
-            </g>
-            
-            {/* Let's try a simpler needle group */}
             <g transform={`translate(${centerX}, ${centerY}) rotate(${needleAngle})`}>
-               {/* 
-                   At angle 0 (Right), we want it pointing Right.
-                   At angle 270 (Top), we want it pointing Top.
-                   So we draw a needle pointing to 0 (Right).
-               */}
                <path d="M 0 -5 L 110 0 L 0 5 Z" fill="#333" />
                <circle cx="0" cy="0" r="8" fill="#555" />
             </g>
-
 
             {/* Central BMI Text */}
             <text x={centerX} y={centerY - 20} fontSize="28" fontWeight="bold" textAnchor="middle" fill="black">BMI = {result.bmi}</text>
