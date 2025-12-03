@@ -21,62 +21,22 @@ import { Share2, Download, RefreshCw, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { calculateMetricBMI, calculateImperialBMI, interpretBMI, type BMIResult } from "@/lib/bmi";
 
-// Helper for number coercion that handles empty strings safely
-const numberOrEmpty = z.union([
-  z.number(),
-  z.string().transform((val) => val === "" ? undefined : Number(val)),
-  z.undefined()
-]);
-
-// Form Schemas
+// Use strings for form inputs to allow easier typing and validation
 const metricSchema = z.object({
-  heightCm: z.preprocess(
-    (val) => (val === "" ? undefined : Number(val)),
-    z.number({ invalid_type_error: "Height is required" })
-      .min(50, "Height must be at least 50cm")
-      .max(300, "Height must be realistic")
-  ),
-  weightKg: z.preprocess(
-    (val) => (val === "" ? undefined : Number(val)),
-    z.number({ invalid_type_error: "Weight is required" })
-      .min(2, "Weight must be at least 2kg")
-      .max(600, "Weight must be realistic")
-  ),
-  age: z.preprocess(
-    (val) => (val === "" ? undefined : Number(val)),
-    z.number().optional()
-  ),
+  heightCm: z.string().min(1, "Height is required").refine(val => !isNaN(Number(val)) && Number(val) >= 50 && Number(val) <= 300, "Height must be between 50cm and 300cm"),
+  weightKg: z.string().min(1, "Weight is required").refine(val => !isNaN(Number(val)) && Number(val) >= 2 && Number(val) <= 600, "Weight must be between 2kg and 600kg"),
+  age: z.string().optional(),
   sex: z.enum(["male", "female"]).optional(),
 });
 
 const imperialSchema = z.object({
-  heightFt: z.preprocess(
-    (val) => (val === "" ? undefined : Number(val)),
-    z.number({ invalid_type_error: "Height (ft) is required" })
-      .min(1, "Height must be at least 1ft")
-      .max(9, "Height must be realistic")
-  ),
-  heightIn: z.preprocess(
-    (val) => (val === "" ? 0 : Number(val)), // Default inches to 0 if empty
-    z.number().min(0).max(11, "Inches must be 0-11")
-  ),
-  weightSt: z.preprocess(
-    (val) => (val === "" ? 0 : Number(val)), // Default stones to 0 if empty
-    z.number().min(0).optional()
-  ),
-  weightLbs: z.preprocess(
-    (val) => (val === "" ? 0 : Number(val)), // Default lbs to 0 if empty
-    z.number().min(0)
-  ),
-  age: z.preprocess(
-    (val) => (val === "" ? undefined : Number(val)),
-    z.number().optional()
-  ),
+  heightFt: z.string().min(1, "Height (ft) is required").refine(val => !isNaN(Number(val)) && Number(val) >= 1 && Number(val) <= 9, "Height must be between 1ft and 9ft"),
+  heightIn: z.string().optional().refine(val => !val || (!isNaN(Number(val)) && Number(val) >= 0 && Number(val) <= 11), "Inches must be 0-11"),
+  weightSt: z.string().optional().refine(val => !val || (!isNaN(Number(val)) && Number(val) >= 0), "Stones must be positive"),
+  weightLbs: z.string().min(1, "Weight (lbs) is required").refine(val => !isNaN(Number(val)) && Number(val) >= 0, "Lbs must be positive"),
+  age: z.string().optional(),
   sex: z.enum(["male", "female"]).optional(),
-}).refine(data => {
-  const totalLbs = (data.weightSt || 0) * 14 + data.weightLbs;
-  return totalLbs > 5;
-}, { message: "Total weight must be realistic (at least 5lbs)", path: ["weightLbs"] });
+});
 
 export default function BMICalculator() {
   const [unit, setUnit] = useState<"metric" | "imperial">("metric");
@@ -84,35 +44,40 @@ export default function BMICalculator() {
 
   const metricForm = useForm<z.infer<typeof metricSchema>>({
     resolver: zodResolver(metricSchema),
-    // Use empty strings for initial values to keep inputs controlled
     defaultValues: { 
-      heightCm: "" as any, 
-      weightKg: "" as any, 
-      age: "" as any, 
+      heightCm: "", 
+      weightKg: "", 
+      age: "", 
       sex: undefined 
     },
+    mode: "onChange"
   });
 
   const imperialForm = useForm<z.infer<typeof imperialSchema>>({
     resolver: zodResolver(imperialSchema),
-    // Use empty strings for initial values to keep inputs controlled
     defaultValues: { 
-      heightFt: "" as any, 
-      heightIn: "" as any, 
-      weightSt: "" as any, 
-      weightLbs: "" as any, 
-      age: "" as any, 
+      heightFt: "", 
+      heightIn: "", 
+      weightSt: "", 
+      weightLbs: "", 
+      age: "", 
       sex: undefined 
     },
+    mode: "onChange"
   });
 
   const calculateMetric = (data: z.infer<typeof metricSchema>) => {
-    const bmi = calculateMetricBMI(data.heightCm, data.weightKg);
+    const bmi = calculateMetricBMI(Number(data.heightCm), Number(data.weightKg));
     setResult(interpretBMI(bmi));
   };
 
   const calculateImperial = (data: z.infer<typeof imperialSchema>) => {
-    const bmi = calculateImperialBMI(data.heightFt, data.heightIn, data.weightSt || 0, data.weightLbs);
+    const bmi = calculateImperialBMI(
+      Number(data.heightFt), 
+      Number(data.heightIn || 0), 
+      Number(data.weightSt || 0), 
+      Number(data.weightLbs)
+    );
     setResult(interpretBMI(bmi));
   };
 
@@ -131,17 +96,17 @@ export default function BMICalculator() {
   const reset = () => {
     setResult(null);
     metricForm.reset({ 
-      heightCm: "" as any, 
-      weightKg: "" as any, 
-      age: "" as any, 
+      heightCm: "", 
+      weightKg: "", 
+      age: "", 
       sex: undefined 
     });
     imperialForm.reset({ 
-      heightFt: "" as any, 
-      heightIn: "" as any, 
-      weightSt: "" as any, 
-      weightLbs: "" as any, 
-      age: "" as any, 
+      heightFt: "", 
+      heightIn: "", 
+      weightSt: "", 
+      weightLbs: "", 
+      age: "", 
       sex: undefined 
     });
   };

@@ -44,30 +44,28 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/">
-            <a className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-              <img 
-                src={logoImage} 
-                alt="nhs bmi calculator logo" 
-                className="h-10 w-auto object-contain" 
-              />
-              <span className="font-heading font-bold text-xl tracking-tight hidden sm:block text-primary-black">
-                nhs bmi calculator
-              </span>
-            </a>
+          <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <img 
+              src={logoImage} 
+              alt="nhs bmi calculator logo" 
+              className="h-10 w-auto object-contain" 
+            />
+            <span className="font-heading font-bold text-xl tracking-tight hidden sm:block text-primary-black">
+              nhs bmi calculator
+            </span>
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href}>
-                <a 
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    isActive(link.href) ? "text-primary font-bold" : "text-muted-foreground"
-                  }`}
-                >
-                  {link.label}
-                </a>
+              <Link 
+                key={link.href} 
+                href={link.href} 
+                className={`text-sm font-medium transition-colors hover:text-primary ${
+                  isActive(link.href) ? "text-primary font-bold" : "text-muted-foreground"
+                }`}
+              >
+                {link.label}
               </Link>
             ))}
             <Link href="/">
@@ -91,15 +89,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <SheetContent side="right" className="w-[250px] sm:w-[300px]">
                 <div className="flex flex-col gap-6 mt-6">
                   {navLinks.map((link) => (
-                    <Link key={link.href} href={link.href}>
-                      <a 
-                        className={`text-lg font-medium transition-colors hover:text-primary ${
-                          isActive(link.href) ? "text-primary" : "text-foreground"
-                        }`}
-                        onClick={() => setIsMobileOpen(false)}
-                      >
-                        {link.label}
-                      </a>
+                    <Link 
+                      key={link.href} 
+                      href={link.href}
+                      className={`text-lg font-medium transition-colors hover:text-primary ${
+                        isActive(link.href) ? "text-primary" : "text-foreground"
+                      }`}
+                      onClick={() => setIsMobileOpen(false)}
+                    >
+                      {link.label}
                     </Link>
                   ))}
                   <Link href="/">
@@ -144,10 +142,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <ul className="flex flex-col gap-2">
                 {navLinks.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href}>
-                      <a className="text-sm text-muted-foreground hover:text-primary transition-colors hover:underline">
-                        {link.label}
-                      </a>
+                    <Link 
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors hover:underline"
+                    >
+                      {link.label}
                     </Link>
                   </li>
                 ))}
@@ -158,7 +157,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex flex-col gap-3">
               <h3 className="font-heading font-semibold text-foreground">Resources</h3>
               <ul className="flex flex-col gap-2">
-                <li><Link href="/#faq"><a className="text-sm text-muted-foreground hover:text-primary transition-colors hover:underline">FAQ</a></Link></li>
+                <li><Link href="/#faq" className="text-sm text-muted-foreground hover:text-primary transition-colors hover:underline">FAQ</Link></li>
                 <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors hover:underline">BMI Categories</a></li>
                 <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors hover:underline">How it works</a></li>
               </ul>
