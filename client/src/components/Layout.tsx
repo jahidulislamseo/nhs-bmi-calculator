@@ -164,7 +164,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Column 4: Contact & Social */}
             <div className="flex flex-col gap-4">
               <h3 className="font-heading font-semibold text-foreground">Connect</h3>
-              <a href="mailto:contact@nhsbmicalculator.mock" className="text-sm text-muted-foreground hover:text-primary transition-colors">Mdjahidulislam@gmail.com</a>
+              <a href="mailto:contact@nhsbmicalculator.mock" className="text-sm text-muted-foreground hover:text-primary transition-colors">Mdjahidulislamf1@gmail.com</a>
               <div className="flex gap-4">
                 <a href="#" aria-label="Facebook" className="text-muted-foreground hover:text-primary transition-colors"><Facebook size={20} /></a>
                 <a href="#" aria-label="Twitter" className="text-muted-foreground hover:text-primary transition-colors"><TwitterIcon className="w-5 h-5" /></a>
