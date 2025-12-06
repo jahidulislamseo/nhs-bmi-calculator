@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -39,15 +39,19 @@ const imperialSchema = z.object({
   sex: z.enum(["male", "female"]).optional(),
 });
 
-export default function BMICalculator() {
+interface BMICalculatorProps {
+  onCalculate?: (result: BMIResult) => void;
+}
+
+export default function BMICalculator({ onCalculate }: BMICalculatorProps) {
   const [unit, setUnit] = useState<"metric" | "imperial">("metric");
   const [result, setResult] = useState<BMIResult | null>(null);
 
   const metricForm = useForm<z.infer<typeof metricSchema>>({
     resolver: zodResolver(metricSchema),
-    defaultValues: { 
-      heightCm: "", 
-      weightKg: "", 
+    defaultValues: {
+      heightCm: "",
+      weightKg: "",
       age: ""
     },
     mode: "onChange"
@@ -55,11 +59,11 @@ export default function BMICalculator() {
 
   const imperialForm = useForm<z.infer<typeof imperialSchema>>({
     resolver: zodResolver(imperialSchema),
-    defaultValues: { 
-      heightFt: "", 
-      heightIn: "", 
-      weightSt: "", 
-      weightLbs: "", 
+    defaultValues: {
+      heightFt: "",
+      heightIn: "",
+      weightSt: "",
+      weightLbs: "",
       age: ""
     },
     mode: "onChange"
@@ -70,7 +74,9 @@ export default function BMICalculator() {
     const weightKg = Number(data.weightKg);
     const bmi = calculateMetricBMI(heightCm, weightKg);
     // Pass height in meters and weight in kg for extended stats
-    setResult(interpretBMI(bmi, heightCm / 100, weightKg));
+    const res = interpretBMI(bmi, heightCm / 100, weightKg);
+    setResult(res);
+    onCalculate?.(res);
   };
 
   const calculateImperial = (data: z.infer<typeof imperialSchema>) => {
@@ -78,19 +84,21 @@ export default function BMICalculator() {
     const heightIn = Number(data.heightIn || 0);
     const weightSt = Number(data.weightSt || 0);
     const weightLbs = Number(data.weightLbs);
-    
+
     const bmi = calculateImperialBMI(heightFt, heightIn, weightSt, weightLbs);
-    
+
     // Convert imperial inputs to metric for extended stats
     // 1 inch = 0.0254 meters
     const totalInches = (heightFt * 12) + heightIn;
     const heightM = totalInches * 0.0254;
-    
+
     // 1 lb = 0.453592 kg
     const totalLbs = (weightSt * 14) + weightLbs;
     const weightKg = totalLbs * 0.453592;
 
-    setResult(interpretBMI(bmi, heightM, weightKg));
+    const res = interpretBMI(bmi, heightM, weightKg);
+    setResult(res);
+    onCalculate?.(res);
   };
 
   const saveAsPDF = () => {
@@ -99,16 +107,16 @@ export default function BMICalculator() {
 
   const reset = () => {
     setResult(null);
-    metricForm.reset({ 
-      heightCm: "", 
-      weightKg: "", 
+    metricForm.reset({
+      heightCm: "",
+      weightKg: "",
       age: ""
     });
-    imperialForm.reset({ 
-      heightFt: "", 
-      heightIn: "", 
-      weightSt: "", 
-      weightLbs: "", 
+    imperialForm.reset({
+      heightFt: "",
+      heightIn: "",
+      weightSt: "",
+      weightLbs: "",
       age: ""
     });
   };
@@ -121,7 +129,7 @@ export default function BMICalculator() {
           Enter your details below to get your Body Mass Index.
         </CardDescription>
       </CardHeader>
-      
+
       <CardContent className="p-6">
         <Tabs value={unit} onValueChange={(v) => { setUnit(v as any); setResult(null); }} className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-6">
@@ -183,7 +191,7 @@ export default function BMICalculator() {
                             </FormItem>
                           )}
                         />
-                         <FormField
+                        <FormField
                           control={metricForm.control}
                           name="sex"
                           render={({ field }) => (
@@ -276,7 +284,7 @@ export default function BMICalculator() {
                         />
                       </div>
 
-                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                         <FormField
                           control={imperialForm.control}
                           name="age"
@@ -289,7 +297,7 @@ export default function BMICalculator() {
                             </FormItem>
                           )}
                         />
-                         <FormField
+                        <FormField
                           control={imperialForm.control}
                           name="sex"
                           render={({ field }) => (
@@ -331,7 +339,7 @@ export default function BMICalculator() {
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
               >
                 <BMIResultCard result={result} unit={unit} onSavePdf={saveAsPDF} />
-                
+
                 <div className="flex gap-3 justify-center mt-6">
                   <Button variant="ghost" size="sm" onClick={reset} className="gap-2">
                     <RefreshCw size={16} /> Calculate Again

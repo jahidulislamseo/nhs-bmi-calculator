@@ -2,8 +2,26 @@ import Head from "@/components/Head";
 import BMICalculator from "@/components/BMICalculator";
 import heroBg from "@assets/generated_images/subtle_abstract_medical_background_pattern.png";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { BMIChart } from "@/components/BMIChart";
+import { type BmiRecord } from "@shared/schema";
 
 export default function Home() {
+  const { data: bmiHistory } = useQuery<BmiRecord[]>({
+    queryKey: ["/api/bmi-history"]
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (newRecord: any) => {
+      const res = await apiRequest("POST", "/api/bmi-history", newRecord);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/bmi-history"] });
+    }
+  });
+
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -16,8 +34,8 @@ export default function Home() {
 
   return (
     <>
-      <Head 
-        title="Nhs BMI Calculator Fast & Accurate BMI Tool" 
+      <Head
+        title="Nhs BMI Calculator Fast & Accurate BMI Tool"
         description="Use the free Nhs BMI Calculator to check your body mass index quickly. Metric & imperial inputs, BMI categories, and health guidance."
         canonical="https://replit.com/"
       />
@@ -28,9 +46,9 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative py-12 md:py-20 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-20">
-           <img src={heroBg} alt="" className="w-full h-full object-cover" />
+          <img src={heroBg} alt="" className="w-full h-full object-cover" />
         </div>
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 text-center lg:text-left">
@@ -50,12 +68,32 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="w-full">
-              <BMICalculator />
+            <div className="w-full space-y-8">
+              <BMICalculator onCalculate={(result) => {
+                if (result.height && result.weight) {
+                  mutation.mutate({
+                    height: result.height.toString(),
+                    weight: result.weight.toString(),
+                    bmi: result.bmi.toString(),
+                    category: result.category
+                  });
+                }
+              }} />
+
             </div>
           </div>
         </div>
       </section>
+
+      {/* History Section - Only show if there is data */}
+      {bmiHistory && bmiHistory.length > 0 && (
+        <section className="py-12 bg-neutral-50 border-b border-neutral-200">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <h2 className="text-3xl font-heading font-bold text-center mb-8 text-primary-black">Your BMI History</h2>
+            <BMIChart data={bmiHistory} />
+          </div>
+        </section>
+      )}
 
       {/* Info Section */}
       <section className="py-16 bg-white">
@@ -63,12 +101,12 @@ export default function Home() {
           <div className="prose prose-lg mx-auto text-muted-foreground">
             <h2 className="text-3xl font-heading font-bold text-foreground mb-6">Understanding Your BMI Result</h2>
             <p>
-              The <strong>Nhs BMI Calculator</strong> is a powerful yet simple tool designed to help you determine if you are a healthy weight for your height. 
-              Body Mass Index (BMI) is a widely used measure that uses your height and weight to work out if your weight is healthy. 
-              The BMI calculation divides an adult's weight in kilograms by their height in metres squared. By using this <strong>Nhs BMI Calculator</strong>, 
+              The <strong>Nhs BMI Calculator</strong> is a powerful yet simple tool designed to help you determine if you are a healthy weight for your height.
+              Body Mass Index (BMI) is a widely used measure that uses your height and weight to work out if your weight is healthy.
+              The BMI calculation divides an adult's weight in kilograms by their height in metres squared. By using this <strong>Nhs BMI Calculator</strong>,
               you can quickly get an indication of your body fatness and potential health risks.
             </p>
-            
+
             <h3 className="text-2xl font-heading font-semibold text-foreground mt-8 mb-4">Why is calculating BMI important?</h3>
             <p>
               Knowing your BMI is a great starting point for understanding your general health. Being underweight, overweight, or obese can increase your risk of developing certain health conditions.
@@ -87,8 +125,8 @@ export default function Home() {
 
             <h3 className="text-2xl font-heading font-semibold text-foreground mt-8 mb-4">Who should use the Nhs BMI Calculator?</h3>
             <p>
-              This tool is suitable for most adults aged 18 and over. It provides a general indication of whether you're 
-              carrying too much weight. However, it's not a diagnostic tool. Muscle mass, age, and ethnicity can all 
+              This tool is suitable for most adults aged 18 and over. It provides a general indication of whether you're
+              carrying too much weight. However, it's not a diagnostic tool. Muscle mass, age, and ethnicity can all
               affect the accuracy of BMI results. For instance, athletes with high muscle mass might be classified as "overweight" by a standard BMI chart, even if their body fat is low.
             </p>
 
@@ -99,10 +137,10 @@ export default function Home() {
               <li><strong>Overweight (25 - 29.9):</strong> You may be slightly heavier than is healthy. Losing a small amount of weight can have health benefits.</li>
               <li><strong>Obese (30 or greater):</strong> Your health may be at risk. It is recommended to speak to a healthcare professional for advice on safe weight loss.</li>
             </ul>
-            
+
             <div className="bg-neutral-50 p-6 rounded-lg border-l-4 border-primary mt-8">
               <p className="font-medium text-foreground m-0">
-                <strong>Note:</strong> If the <strong>Nhs BMI Calculator</strong> suggests you are outside the healthy range, 
+                <strong>Note:</strong> If the <strong>Nhs BMI Calculator</strong> suggests you are outside the healthy range,
                 don't panic. This result is just one indicator of health. Consider consulting a GP or healthcare professional for advice tailored to your specific circumstances.
               </p>
             </div>

@@ -9,6 +9,8 @@ export type BMIResult = {
   ponderalIndex: number; // kg/m^3
   healthyWeightRange: { min: number; max: number }; // in kg
   weightToLoseOrGain: number; // negative for lose, positive for gain, 0 if healthy
+  height?: number; // in meters
+  weight?: number; // in kg
 };
 
 export const calculateMetricBMI = (heightCm: number, weightKg: number): number => {
@@ -30,7 +32,7 @@ export const calculateExtendedStats = (bmi: number, heightM: number, weightKg: n
   // Healthy BMI range is 18.5 to 25
   const minHealthyWeight = 18.5 * (heightM * heightM);
   const maxHealthyWeight = 25 * (heightM * heightM);
-  
+
   let weightToLoseOrGain = 0;
   if (bmi < 18.5) {
     // Needs to gain to reach 18.5
@@ -49,9 +51,9 @@ export const calculateExtendedStats = (bmi: number, heightM: number, weightKg: n
   return {
     prime,
     ponderalIndex,
-    healthyWeightRange: { 
-      min: parseFloat(minHealthyWeight.toFixed(1)), 
-      max: parseFloat(maxHealthyWeight.toFixed(1)) 
+    healthyWeightRange: {
+      min: parseFloat(minHealthyWeight.toFixed(1)),
+      max: parseFloat(maxHealthyWeight.toFixed(1))
     },
     weightToLoseOrGain: parseFloat(weightToLoseOrGain.toFixed(1))
   };
@@ -61,30 +63,30 @@ export const interpretBMI = (bmi: number, heightM?: number, weightKg?: number): 
   let basicResult: Pick<BMIResult, "bmi" | "category" | "color" | "message">;
 
   if (bmi < 18.5) {
-    basicResult = { 
-      bmi, 
-      category: "Underweight", 
+    basicResult = {
+      bmi,
+      category: "Underweight",
       color: "text-blue-600", // Will be overridden by gauge colors visually
       message: "You may need to gain weight. Consult a GP for advice."
     };
   } else if (bmi < 25) {
-    basicResult = { 
-      bmi, 
-      category: "Healthy Weight", 
+    basicResult = {
+      bmi,
+      category: "Healthy Weight",
       color: "text-green-600",
       message: "You're a healthy weight for your height. Keep up the good work!"
     };
   } else if (bmi < 30) {
-    basicResult = { 
-      bmi, 
-      category: "Overweight", 
+    basicResult = {
+      bmi,
+      category: "Overweight",
       color: "text-yellow-600",
       message: "You may be slightly overweight. Small changes can help."
     };
   } else {
-    basicResult = { 
-      bmi, 
-      category: "Obese", 
+    basicResult = {
+      bmi,
+      category: "Obese",
       color: "text-red-600",
       message: "Your health may be at risk. Please consult a healthcare professional."
     };
@@ -93,7 +95,7 @@ export const interpretBMI = (bmi: number, heightM?: number, weightKg?: number): 
   // If we have height/weight, calculate extended stats, otherwise return defaults
   if (heightM && weightKg) {
     const stats = calculateExtendedStats(bmi, heightM, weightKg);
-    return { ...basicResult, ...stats };
+    return { ...basicResult, ...stats, height: heightM, weight: weightKg };
   }
 
   return {

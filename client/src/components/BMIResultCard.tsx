@@ -1,5 +1,7 @@
 import { Save } from "lucide-react";
 import { type BMIResult } from "@/lib/bmi";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 interface BMIResultCardProps {
   result: BMIResult;
@@ -7,9 +9,75 @@ interface BMIResultCardProps {
   onSavePdf: () => void;
 }
 
-export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCardProps) {
+export default function BMIResultCard({ result, unit }: BMIResultCardProps) {
   const kgToLbs = (kg: number) => (kg * 2.20462).toFixed(1);
   const displayWeight = (kg: number) => unit === "imperial" ? `${kgToLbs(kg)} lbs` : `${kg.toFixed(1)} kg`;
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    const today = new Date().toLocaleDateString();
+    const time = new Date().toLocaleTimeString();
+
+    // Header
+    doc.setFillColor(85, 139, 47); // Green background matching the card
+    doc.rect(0, 0, 210, 40, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(22);
+    doc.text("NHS BMI Calculator Report", 105, 25, { align: "center" });
+
+    // Summary Section
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(14);
+    doc.text(`Date: ${today} at ${time}`, 20, 55);
+
+    doc.setFontSize(18);
+    doc.text("Your Result", 20, 70);
+
+    // Result Box
+    doc.setDrawColor(200, 200, 200);
+    doc.setFillColor(245, 245, 245);
+    doc.roundedRect(20, 80, 170, 40, 3, 3, "FD");
+
+    doc.setFontSize(24);
+    doc.setTextColor(85, 139, 47);
+    doc.text(`BMI: ${result.bmi}`, 105, 100, { align: "center" });
+
+    doc.setFontSize(16);
+    // Dynamic color for category text in PDF
+    const catColor = result.category === "Healthy Weight" ? [76, 175, 80] :
+      result.category === "Overweight" ? [253, 216, 53] : [211, 47, 47];
+    doc.setTextColor(catColor[0], catColor[1], catColor[2]);
+    doc.text(result.category, 105, 112, { align: "center" });
+
+    // Reset color
+    doc.setTextColor(0, 0, 0);
+
+    // Detailed Stats Table
+    const tableData = [
+      ["Height", result.height ? `${result.height} m` : "N/A"],
+      ["Weight", result.weight ? `${result.weight} kg` : "N/A"],
+      ["Healthy BMI Range", "18.5 - 25.0"],
+      ["Healthy Weight Range", `${result.healthyWeightRange.min}kg - ${result.healthyWeightRange.max}kg`],
+      ["Ponderal Index", `${result.ponderalIndex} kg/m³`],
+      ["Status Message", result.message]
+    ];
+
+    autoTable(doc, {
+      startY: 130,
+      head: [["Metric", "Value"]],
+      body: tableData,
+      theme: 'grid',
+      headStyles: { fillColor: [85, 139, 47] },
+      columnStyles: { 0: { fontStyle: 'bold', cellWidth: 60 } }
+    });
+
+    // Footer
+    doc.setFontSize(10);
+    doc.setTextColor(150, 150, 150);
+    doc.text("This report is for informational purposes only. Consult a healthcare professional for medical advice.", 105, 280, { align: "center" });
+
+    doc.save(`BMI_Report_${today.replace(/\//g, "-")}.pdf`);
+  };
 
   // Gauge configuration
   const radius = 100;
@@ -44,7 +112,7 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
       {/* Header - Static Green matching the image */}
       <div className="bg-[#558B2F] p-3 flex justify-between items-center text-white">
         <h2 className="text-xl font-bold text-white">Result</h2>
-        <button onClick={onSavePdf} className="flex flex-col items-center text-xs hover:opacity-80 transition-opacity text-white">
+        <button onClick={generatePDF} className="flex flex-col items-center text-xs hover:opacity-80 transition-opacity text-white">
           <Save className="h-5 w-5" />
           <span>save</span>
         </button>
@@ -61,101 +129,101 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
         {/* Gauge Visualization */}
         <div className="relative h-56 w-full flex justify-center overflow-hidden mb-4">
           <svg viewBox="0 0 300 220" className="w-full max-w-[320px]">
-            
+
             {/* Segments */}
             {/* Underweight: minChart to 18.5 - Red */}
-            <path 
-              d={describeArc(centerX, centerY, radius, valueToAngle(minChart), valueToAngle(18.5))} 
-              fill="none" 
-              stroke="#D32F2F" 
-              strokeWidth={strokeWidth} 
+            <path
+              d={describeArc(centerX, centerY, radius, valueToAngle(minChart), valueToAngle(18.5))}
+              fill="none"
+              stroke="#D32F2F"
+              strokeWidth={strokeWidth}
             />
 
             {/* Normal: 18.5 to 25 - Green */}
-            <path 
-              d={describeArc(centerX, centerY, radius, valueToAngle(18.5), valueToAngle(25))} 
-              fill="none" 
-              stroke="#4CAF50" 
-              strokeWidth={strokeWidth} 
+            <path
+              d={describeArc(centerX, centerY, radius, valueToAngle(18.5), valueToAngle(25))}
+              fill="none"
+              stroke="#4CAF50"
+              strokeWidth={strokeWidth}
             />
 
             {/* Overweight: 25 to 30 - Yellow */}
-            <path 
-              d={describeArc(centerX, centerY, radius, valueToAngle(25), valueToAngle(30))} 
-              fill="none" 
-              stroke="#FDD835" 
-              strokeWidth={strokeWidth} 
+            <path
+              d={describeArc(centerX, centerY, radius, valueToAngle(25), valueToAngle(30))}
+              fill="none"
+              stroke="#FDD835"
+              strokeWidth={strokeWidth}
             />
 
             {/* Obesity: 30 to maxChart - Red */}
-            <path 
-              d={describeArc(centerX, centerY, radius, valueToAngle(30), valueToAngle(maxChart))} 
-              fill="none" 
-              stroke="#C62828" 
-              strokeWidth={strokeWidth} 
+            <path
+              d={describeArc(centerX, centerY, radius, valueToAngle(30), valueToAngle(maxChart))}
+              fill="none"
+              stroke="#C62828"
+              strokeWidth={strokeWidth}
             />
 
             {/* White dividers between segments */}
-            <path d={describeArc(centerX, centerY, radius, valueToAngle(18.5)-0.5, valueToAngle(18.5)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
-            <path d={describeArc(centerX, centerY, radius, valueToAngle(25)-0.5, valueToAngle(25)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
-            <path d={describeArc(centerX, centerY, radius, valueToAngle(30)-0.5, valueToAngle(30)+0.5)} fill="none" stroke="white" strokeWidth={strokeWidth+2} />
+            <path d={describeArc(centerX, centerY, radius, valueToAngle(18.5) - 0.5, valueToAngle(18.5) + 0.5)} fill="none" stroke="white" strokeWidth={strokeWidth + 2} />
+            <path d={describeArc(centerX, centerY, radius, valueToAngle(25) - 0.5, valueToAngle(25) + 0.5)} fill="none" stroke="white" strokeWidth={strokeWidth + 2} />
+            <path d={describeArc(centerX, centerY, radius, valueToAngle(30) - 0.5, valueToAngle(30) + 0.5)} fill="none" stroke="white" strokeWidth={strokeWidth + 2} />
 
             {/* Labels outside the arc - Manual placement for better control */}
             {/* Underweight (approx 16.75) */}
-            <text 
-              x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(16.75)).x} 
-              y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(16.75)).y} 
-              fontSize="11" 
+            <text
+              x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(16.75)).x}
+              y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(16.75)).y}
+              fontSize="11"
               transform={`rotate(${valueToAngle(16.75) - 270}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(16.75)).x}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(16.75)).y})`}
-              textAnchor="middle" 
+              textAnchor="middle"
               fill="#000"
             >Underweight</text>
 
             {/* Normal (approx 21.75) */}
-            <text 
-              x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(21.75)).x} 
-              y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(21.75)).y} 
-              fontSize="11" 
+            <text
+              x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(21.75)).x}
+              y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(21.75)).y}
+              fontSize="11"
               transform={`rotate(${valueToAngle(21.75) - 270}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(21.75)).x}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(21.75)).y})`}
-              textAnchor="middle" 
+              textAnchor="middle"
               fill="#000"
             >Normal</text>
 
             {/* Overweight (approx 27.5) */}
-            <text 
-              x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(27.5)).x} 
-              y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(27.5)).y} 
-              fontSize="11" 
+            <text
+              x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(27.5)).x}
+              y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(27.5)).y}
+              fontSize="11"
               transform={`rotate(${valueToAngle(27.5) - 270}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(27.5)).x}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(27.5)).y})`}
-              textAnchor="middle" 
+              textAnchor="middle"
               fill="#000"
             >Overweight</text>
 
             {/* Obesity (approx 35) */}
-            <text 
-              x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(35)).x} 
-              y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(35)).y} 
-              fontSize="11" 
+            <text
+              x={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(35)).x}
+              y={polarToCartesian(centerX, centerY, radius + 25, valueToAngle(35)).y}
+              fontSize="11"
               transform={`rotate(${valueToAngle(35) - 270}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(35)).x}, ${polarToCartesian(centerX, centerY, radius + 25, valueToAngle(35)).y})`}
-              textAnchor="middle" 
+              textAnchor="middle"
               fill="#000"
             >Obesity</text>
 
             {/* Tick Values - Inside the band, White */}
             {[16, 17, 18.5, 25, 30, 35, 40].map(val => (
-               val >= minChart && val <= maxChart && (
-                <text 
+              val >= minChart && val <= maxChart && (
+                <text
                   key={val}
-                  x={polarToCartesian(centerX, centerY, radius, valueToAngle(val)).x} 
-                  y={polarToCartesian(centerX, centerY, radius, valueToAngle(val)).y + 4} 
-                  fontSize="9" 
-                  fontWeight="bold" 
-                  textAnchor="middle" 
+                  x={polarToCartesian(centerX, centerY, radius, valueToAngle(val)).x}
+                  y={polarToCartesian(centerX, centerY, radius, valueToAngle(val)).y + 4}
+                  fontSize="9"
+                  fontWeight="bold"
+                  textAnchor="middle"
                   fill="white"
                 >
                   {val}
                 </text>
-               )
+              )
             ))}
 
             {/* Big BMI Text BELOW the needle pivot */}
@@ -165,9 +233,9 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
 
             {/* Needle */}
             <g transform={`translate(${centerX}, ${centerY}) rotate(${needleAngle - 270})`}>
-               <line x1="0" y1="0" x2="0" y2="-65" stroke="#333" strokeWidth="3" />
-               <polygon points="0,-75 -5,-65 5,-65" fill="#333" />
-               <circle cx="0" cy="0" r="8" fill="#666" />
+              <line x1="0" y1="0" x2="0" y2="-65" stroke="#333" strokeWidth="3" />
+              <polygon points="0,-75 -5,-65 5,-65" fill="#333" />
+              <circle cx="0" cy="0" r="8" fill="#666" />
             </g>
           </svg>
         </div>
@@ -183,7 +251,7 @@ export default function BMIResultCard({ result, unit, onSavePdf }: BMIResultCard
             </li>
             <li>
               {result.weightToLoseOrGain === 0 ? (
-                 <span>You are at a healthy weight.</span>
+                <span>You are at a healthy weight.</span>
               ) : result.weightToLoseOrGain < 0 ? (
                 <span>Lose {displayWeight(Math.abs(result.weightToLoseOrGain))} to reach a BMI of 25 kg/m².</span>
               ) : (
@@ -213,15 +281,15 @@ function polarToCartesian(centerX: number, centerY: number, radius: number, angl
 }
 
 function describeArc(x: number, y: number, radius: number, startAngle: number, endAngle: number) {
-    var start = polarToCartesian(x, y, radius, endAngle);
-    var end = polarToCartesian(x, y, radius, startAngle);
+  var start = polarToCartesian(x, y, radius, endAngle);
+  var end = polarToCartesian(x, y, radius, startAngle);
 
-    var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+  var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
 
-    var d = [
-        "M", start.x, start.y, 
-        "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
-    ].join(" ");
+  var d = [
+    "M", start.x, start.y,
+    "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
+  ].join(" ");
 
-    return d;
+  return d;
 }
